@@ -1,6 +1,5 @@
 /* Gurlex redesign concept — progressive enhancement only.
-   Nothing here is required to read the page. Entrance motion is handled
-   by native CSS scroll-driven animations, not by this file. */
+   Nothing here is required to read the page. */
 (() => {
   'use strict';
 
@@ -10,8 +9,8 @@
 
   /* ---------------------------------------------------------
      1. Age gate
-     Demo only: persisted client-side. In production this belongs
-     server-side so deep links cannot bypass it.
+     Demo only: persisted client-side. In production this
+     belongs server-side so deep links cannot bypass it.
      --------------------------------------------------------- */
   const KEY = 'gurlex:age-verified';
   const gate = document.getElementById('gate');
@@ -24,7 +23,7 @@
 
   const focusables = () =>
     [...gate.querySelectorAll('button, [href]')].filter(
-      (el) => !el.disabled && !el.hidden && el.offsetParent !== null
+      (el) => !el.disabled && el.offsetParent !== null
     );
 
   function trap(e) {
@@ -47,11 +46,12 @@
     gate.hidden = false;
     document.body.classList.add('locked');
     deny.hidden = true;
-    yes.hidden = false;
     no.hidden = false;
+    yes.hidden = false;
     document.addEventListener('keydown', trap);
-    /* synchronous: rAF is suspended in background tabs, and moving focus
-       into a modal is functional rather than decorative */
+    /* Focus moves synchronously: rAF is suspended in background tabs, and
+       moving focus into the dialog is functional, not decorative. The extra
+       frame is only a retry for engines that need the paint first. */
     yes.focus();
     if (document.activeElement !== yes) requestAnimationFrame(() => yes.focus());
   }
@@ -69,10 +69,13 @@
   } catch (_) {
     /* private mode: fall through and show the gate */
   }
+
   if (!verified) openGate();
 
   yes.addEventListener('click', () => {
-    try { localStorage.setItem(KEY, '1'); } catch (_) {}
+    try {
+      localStorage.setItem(KEY, '1');
+    } catch (_) {}
     closeGate();
   });
 
@@ -85,7 +88,9 @@
 
   if (regate) {
     regate.addEventListener('click', () => {
-      try { localStorage.removeItem(KEY); } catch (_) {}
+      try {
+        localStorage.removeItem(KEY);
+      } catch (_) {}
       openGate();
     });
   }
@@ -104,12 +109,16 @@
     dlMenu.hidden = !open;
     dlToggle.setAttribute('aria-expanded', String(open));
   };
+
+  dlToggle.addEventListener('click', () => {
+    setSub(dlMenu.hidden);
+  });
+
   const setNav = (open) => {
     nav.classList.toggle('is-open', open);
     burger.setAttribute('aria-expanded', String(open));
   };
 
-  dlToggle.addEventListener('click', () => setSub(dlMenu.hidden));
   burger.addEventListener('click', () => {
     setNav(!nav.classList.contains('is-open'));
     setSub(false);
@@ -121,57 +130,64 @@
       nav.classList.contains('is-open') &&
       !e.target.closest('.nav') &&
       !e.target.closest('.burger')
-    ) setNav(false);
+    ) {
+      setNav(false);
+    }
   });
 
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    if (!dlMenu.hidden) { setSub(false); dlToggle.focus(); }
-    else if (nav.classList.contains('is-open')) { setNav(false); burger.focus(); }
+    if (!dlMenu.hidden) {
+      setSub(false);
+      dlToggle.focus();
+    } else if (nav.classList.contains('is-open')) {
+      setNav(false);
+      burger.focus();
+    }
   });
 
+  /* close the mobile drawer after jumping to a section */
   nav.querySelectorAll('a[href^="#"]').forEach((a) =>
     a.addEventListener('click', () => setNav(false))
   );
 
   /* ---------------------------------------------------------
-     3. Ticker
-     The CSS loop translates by -50%, which is only seamless with
-     exactly two copies of the set. Cloning here keeps the markup
-     free of duplicated content for screen readers and crawlers.
+     3. Entrance reveals
      --------------------------------------------------------- */
-  const run = document.getElementById('ticker-run');
-  if (run && run.children.length === 1) {
-    const clone = run.firstElementChild.cloneNode(true);
-    clone.setAttribute('aria-hidden', 'true');
-    run.appendChild(clone);
-  }
+  const items = [...document.querySelectorAll('.reveal')];
+  items.forEach((el) => {
+    if (el.dataset.d) el.style.setProperty('--d', el.dataset.d);
+  });
 
-  /* ---------------------------------------------------------
-     4. Shelf rail: drag to scroll with a pointer, in addition to
-        native wheel / touch / keyboard scrolling.
-     --------------------------------------------------------- */
-  const rail = document.querySelector('.shelf__rail');
-  if (rail) {
-    let down = false, startX = 0, startLeft = 0, moved = false;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealAll = () => items.forEach((el) => el.classList.add('in'));
 
-    rail.addEventListener('pointerdown', (e) => {
-      if (e.pointerType === 'touch') return;   /* let native touch scrolling win */
-      down = true; moved = false;
-      startX = e.clientX;
-      startLeft = rail.scrollLeft;
-    });
-    rail.addEventListener('pointermove', (e) => {
-      if (!down) return;
-      const dx = e.clientX - startX;
-      if (Math.abs(dx) > 3) moved = true;
-      rail.scrollLeft = startLeft - dx;
-    });
-    const end = () => { down = false; };
-    rail.addEventListener('pointerup', end);
-    rail.addEventListener('pointercancel', end);
-    rail.addEventListener('pointerleave', end);
-    /* a drag should not also activate whatever was under the cursor */
-    rail.addEventListener('click', (e) => { if (moved) e.preventDefault(); });
+  if (!reduce && 'IntersectionObserver' in window && items.length) {
+    /* opt in to the hidden starting state only now that we can undo it */
+    root.classList.add('anim');
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.06 }
+    );
+    items.forEach((el) => io.observe(el));
+
+    /* Safety net: observer callbacks are throttled in background tabs and
+       absent in some embedded webviews. Never leave content invisible. */
+    const net = setTimeout(revealAll, 2000);
+    document.addEventListener(
+      'visibilitychange',
+      () => {
+        if (!document.hidden) setTimeout(revealAll, 1200);
+      },
+      { once: true }
+    );
+    window.addEventListener('pagehide', () => clearTimeout(net), { once: true });
   }
 })();
