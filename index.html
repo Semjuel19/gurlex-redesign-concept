@@ -23,7 +23,7 @@
 <meta property="og:image:alt" content="Gurlex, distribútor slovenských liehovín">
 <meta name="twitter:card" content="summary_large_image">
 
-<meta name="theme-color" content="#0a1836">
+<meta name="theme-color" content="#080f24">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 
 <link rel="preload" href="assets/fonts/archivo-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
@@ -55,19 +55,22 @@
 
 <a class="skip" href="#main">Preskočiť na obsah</a>
 
+<!-- the drafting sheet: hairline column rules behind the content -->
+<div class="rules" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
 <!-- ─────────────────────────── AGE GATE ─────────────────────────── -->
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title" aria-describedby="gate-desc" hidden>
-  <div class="gate__grid">
+  <p class="gate__meta" aria-hidden="true">GURLEX <span>/</span> OVERENIE VEKU <span>/</span> 18+</p>
+  <div class="gate__inner">
     <div class="gate__body">
-      <p class="label">Overenie veku</p>
-      <p class="gate__title" id="gate-title">Naše produkty sú len pre dospelých</p>
+      <p class="gate__title" id="gate-title">Naše produkty<br>sú len pre<br><em>dospelých</em></p>
       <p class="gate__desc" id="gate-desc">Obsah tejto webstránky je vhodný len osobám starším ako 18 rokov. Pre pokračovanie je potrebné potvrdiť váš vek.</p>
       <div class="gate__actions">
         <button class="btn btn--accent" id="gate-yes" type="button">Mám viac ako 18 rokov</button>
-        <button class="btn btn--ghost" id="gate-no" type="button">Nemám 18 rokov</button>
+        <button class="btn btn--line" id="gate-no" type="button">Nemám 18 rokov</button>
       </div>
-      <p class="gate__note">Alkohol môže byť škodlivý. Pite zodpovedne.</p>
       <p class="gate__deny" id="gate-deny" role="status" tabindex="-1" hidden>Ľutujeme, obsah tejto stránky nie je prístupný osobám mladším ako 18 rokov.</p>
+      <p class="gate__note">Alkohol môže byť škodlivý. Pite zodpovedne.</p>
     </div>
     <div class="gate__object" aria-hidden="true">
       <picture>
@@ -80,22 +83,27 @@
 
 <!-- ─────────────────────────── HEADER ─────────────────────────── -->
 <header class="hdr" id="top">
-  <div class="shell hdr__inner">
+  <p class="hdr__strip" aria-hidden="true">
+    <span>SK</span><span class="sep">/</span><span>V4</span><span class="sep">/</span><span>EST. 1994</span>
+    <span class="hdr__strip-r">20 ZNAČIEK <span class="sep">/</span> 196 PRODUKTOV</span>
+  </p>
+
+  <div class="hdr__bar">
     <a class="hdr__mark" href="#top" aria-label="Gurlex, domovská stránka">
       <img src="assets/brand/gurlex-wordmark.webp" alt="Gurlex" width="238" height="29">
     </a>
 
     <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu">
-      <span></span><span></span><span></span>
+      <span></span><span></span>
     </button>
 
     <nav class="nav" id="nav" aria-label="Hlavná navigácia">
       <ul class="nav__list">
-        <li><a href="#znacky">Naše značky</a></li>
+        <li><a href="#index">Naše značky</a></li>
         <li><a href="#vyrobcovia">Výrobcovia</a></li>
         <li class="nav__has-sub">
           <button type="button" class="nav__toggle" id="dl-toggle" aria-expanded="false" aria-controls="dl-menu">
-            Na stiahnutie <svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Na stiahnutie <svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
           </button>
           <ul class="nav__sub" id="dl-menu">
             <li><a href="https://www.gurlex.sk/uploads/article_44_24_02_20_produktovykatalog_mail.pdf">Produktový katalóg (PDF)</a></li>
@@ -114,9 +122,8 @@
           <li><a href="https://www.gurlex.pl/" hreflang="pl">PL</a></li>
           <li><a href="https://www.gurlex.hu/" hreflang="hu">HU</a></li>
         </ul>
-        <a class="social" href="https://www.facebook.com/gurlex.sk/" rel="noopener">
-          <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H16.7V3.6c-.3-.04-1.3-.13-2.45-.13-2.42 0-4.08 1.48-4.08 4.2V9.9H7.45V13h2.72v8h3.33z"/></svg>
-          <span class="sr">Facebook</span>
+        <a class="social" href="https://www.facebook.com/gurlex.sk/" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H16.7V3.6c-.3-.04-1.3-.13-2.45-.13-2.42 0-4.08 1.48-4.08 4.2V9.9H7.45V13h2.72v8h3.33z"/></svg>
         </a>
       </div>
     </nav>
@@ -127,237 +134,298 @@
 
   <!-- ─────────────────────────── HERO ─────────────────────────── -->
   <section class="hero">
-    <div class="hero__glow" aria-hidden="true"></div>
-    <div class="shell hero__grid">
-      <div class="hero__copy">
-        <p class="label reveal">Výhradný distribútor <span class="dot">·</span> od roku 1994</p>
-        <h1 class="hero__title reveal" data-d="1">
-          Slovenské<br><em>destiláty</em><br><span class="nowrap">pre celú V4</span>
-        </h1>
-        <p class="hero__lede reveal" data-d="2">
-          Gurlex, s.r.o. je oficiálny a výhradný distribútor spoločností GAS FAMILIA s.r.o.
-          a BGV s.r.o. v krajinách V4.
-        </p>
-        <div class="hero__cta reveal" data-d="3">
-          <a class="btn btn--accent" href="#znacky">Prezrieť 20 značiek</a>
-          <a class="btn btn--ghost" href="https://www.gurlex.sk/uploads/article_44_24_02_20_produktovykatalog_mail.pdf">
-            Produktový katalóg
-            <span class="btn__meta">PDF</span>
-          </a>
-        </div>
+    <p class="rail rail--l" aria-hidden="true">Stará Ľubovňa <span>/</span> Spiš <span>/</span> SK</p>
 
-        <dl class="facts reveal" data-d="4">
-          <div><dt>Založené</dt><dd>1994</dd></div>
-          <div><dt>Značiek</dt><dd>20</dd></div>
-          <div><dt>Produktov</dt><dd>196</dd></div>
-          <div><dt>Sídlo</dt><dd>Stará Ľubovňa</dd></div>
-        </dl>
-      </div>
+    <div class="hero__object" aria-hidden="true">
+      <picture>
+        <source srcset="assets/bottle-hero.avif" type="image/avif">
+        <img src="assets/bottle-hero.webp" alt="" width="480" height="751" fetchpriority="high" decoding="async">
+      </picture>
+    </div>
 
-      <div class="hero__object reveal" data-d="2">
-        <picture>
-          <source srcset="assets/bottle-hero.avif" type="image/avif">
-          <img src="assets/bottle-hero.webp"
-               alt="Goraľ Slivovica 45 %, karafa z portfólia Gurlex"
-               width="480" height="751" fetchpriority="high" decoding="async">
-        </picture>
+    <h1 class="hero__h">
+      <span class="hero__kick">Výhradný distribútor <i>/</i> od roku 1994</span>
+      <span class="hero__big">Destiláty</span>
+      <span class="hero__sub">zo Spiša pre celú <em>V4</em></span>
+    </h1>
+
+    <div class="hero__foot">
+      <p class="hero__lede">Gurlex, s.r.o. je oficiálny a výhradný distribútor spoločností GAS FAMILIA s.r.o. a BGV s.r.o. v krajinách V4.</p>
+      <div class="hero__cta">
+        <a class="btn btn--accent" href="#index">Prezrieť značky</a>
+        <a class="btn btn--line" href="https://www.gurlex.sk/uploads/article_44_24_02_20_produktovykatalog_mail.pdf">Katalóg <span>PDF</span></a>
       </div>
     </div>
+
+    <dl class="spec">
+      <div><dt>Založené</dt><dd>1994</dd></div>
+      <div><dt>Značky</dt><dd>20</dd></div>
+      <div><dt>Produkty</dt><dd>196</dd></div>
+      <div><dt>Krajiny</dt><dd>4</dd></div>
+    </dl>
   </section>
 
-  <!-- ─────────────────────────── SHELF ─────────────────────────── -->
-  <section class="shelf" aria-labelledby="shelf-h">
-    <div class="shell">
-      <h2 class="sr" id="shelf-h">Vybrané z portfólia</h2>
-      <ul class="shelf__row">
-        <li class="reveal"><img src="assets/bottles/goral.webp" alt="Goral Borovička Tradičná 40 %, 0,7 l" width="260" height="260" loading="lazy" decoding="async"></li>
-        <li class="reveal" data-d="1"><img src="assets/bottles/tatrabalsam.webp" alt="Tatra Balsam Special 52 %, keramika, 0,7 l" width="260" height="260" loading="lazy" decoding="async"></li>
-        <li class="reveal" data-d="2"><img src="assets/bottles/spisska.webp" alt="Starospišská Domáca 50 %, 0,5 l" width="260" height="260" loading="lazy" decoding="async"></li>
-        <li class="reveal" data-d="3"><img src="assets/bottles/nestville-whisky.webp" alt="Nestville Pear Liqueur 35 %, 0,7 l" width="260" height="260" loading="lazy" decoding="async"></li>
-        <li class="reveal" data-d="4"><img src="assets/bottles/noblemen-collection.webp" alt="Ján II. Gin Pink for Maria 37,5 %, 0,7 l" width="260" height="260" loading="lazy" decoding="async"></li>
-        <li class="reveal" data-d="5"><img src="assets/bottles/gurmen.webp" alt="GUR.MEN ocot vínny 6 %, 0,5 l Premium" width="260" height="260" loading="lazy" decoding="async"></li>
-      </ul>
+  <!-- ─────────────────────────── TICKER ─────────────────────────── -->
+  <section class="ticker" aria-labelledby="ticker-h">
+    <h2 class="sr" id="ticker-h">Portfólio značiek</h2>
+    <div class="ticker__vp">
+      <div class="ticker__run" id="ticker-run">
+        <span class="ticker__set">
+          Goral <i>·</i> Nestville Whisky <i>·</i> Tatra Balsam <i>·</i> Spišská Rada <i>·</i> Familia <i>·</i>
+          Gur.men <i>·</i> Napoleon <i>·</i> Fruxi Fresh <i>·</i> Double Cross <i>·</i> Noblemen Collection <i>·</i>
+          Original Spišská Kosher <i>·</i> Spiš Originál <i>·</i> Alternative Vodka <i>·</i> Víno <i>·</i> Gas <i>·</i>
+        </span>
+      </div>
     </div>
   </section>
 
   <!-- ─────────────────────────── O SPOLOČNOSTI ─────────────────────────── -->
   <section class="about" id="o-nas" aria-labelledby="about-h">
-    <div class="shell about__grid">
-      <div class="about__head">
-        <p class="idx">01</p>
-        <h2 id="about-h">O spoločnosti</h2>
-      </div>
-      <div class="prose">
-        <p class="prose__lead">Firma Gurlex bola založená ako spoločnosť s ručením obmedzeným za účelom výhradnej distribúcie liehovín. Na počiatku svojho vzniku v roku 1994 bola firma situovaná do malých priestorov v blízkosti historického centra Starej Ľubovne.</p>
+    <p class="rail rail--l" aria-hidden="true">01 <span>/</span> Spoločnosť</p>
+
+    <div class="about__head">
+      <p class="sec-n">01</p>
+      <h2 id="about-h" class="sec-h calibrate">O spoločnosti</h2>
+    </div>
+
+    <p class="about__year" aria-hidden="true">1994</p>
+
+    <div class="about__body">
+      <p class="about__lead">Firma Gurlex bola založená ako spoločnosť s ručením obmedzeným za účelom výhradnej distribúcie liehovín. Na počiatku svojho vzniku v roku 1994 bola firma situovaná do malých priestorov v blízkosti historického centra Starej Ľubovne.</p>
+      <div class="about__cols">
         <p>Postupom času prešla naša firma dôslednou reštrukturalizáciou nielen v organizačnej ale aj kapitálovej štruktúre, čoho dôsledkom je manažment na vysokej úrovni, najmodernejšie technologické vybavenie a silná a stabilná pozícia na trhu. Firma sa kontinuálne adaptuje požiadavkám a potrebám trhu a spotrebiteľov a v súčasnej dobe ponúka to najkvalitnejšie z oblasti destilátov, liehovín a pochutín na domácom a zahraničnom trhu.</p>
-        <p>Naša firma sa v rámci svojich aktivít riadi etickými pravidlami a zameriava sa na zodpovednú konzumáciu alkoholických nápojov v súlade s legislatívou daných štátov.</p>
-        <p>Portfólio spoločnosti zahŕňa najkvalitnejšie produkty ponúkané v segmente alkoholických nápojov a liehovín.</p>
+        <p>Naša firma sa v rámci svojich aktivít riadi etickými pravidlami a zameriava sa na zodpovednú konzumáciu alkoholických nápojov v súlade s legislatívou daných štátov. Portfólio spoločnosti zahŕňa najkvalitnejšie produkty ponúkané v segmente alkoholických nápojov a liehovín.</p>
       </div>
     </div>
   </section>
 
-  <!-- ─────────────────────────── ZNAČKY ─────────────────────────── -->
-  <section class="brands" id="znacky" aria-labelledby="brands-h">
-    <div class="shell">
-      <div class="brands__head">
-        <div>
-          <p class="idx">02</p>
-          <h2 id="brands-h">Naše značky</h2>
-        </div>
-        <p class="brands__meta">Dvadsať značiek, <strong>196 produktov</strong>. Vyberte značku a prezrite si jej sortiment.</p>
-      </div>
+  <!-- ─────────────────────────── SHELF (drag rail) ─────────────────────────── -->
+  <section class="shelf" aria-labelledby="shelf-h">
+    <h2 class="sr" id="shelf-h">Vybrané z portfólia</h2>
+    <ul class="shelf__rail">
+      <li><img src="assets/bottles/goral.webp" alt="Goral Borovička Tradičná 40 %, 0,7 l" width="300" height="300" loading="lazy" decoding="async"><span>Goral Borovička <i>40 % · 0,7 l</i></span></li>
+      <li><img src="assets/bottles/tatrabalsam.webp" alt="Tatra Balsam Special 52 %, keramika, 0,7 l" width="300" height="300" loading="lazy" decoding="async"><span>Tatra Balsam Special <i>52 % · 0,7 l</i></span></li>
+      <li><img src="assets/bottles/spisska.webp" alt="Starospišská Domáca 50 %, 0,5 l" width="300" height="300" loading="lazy" decoding="async"><span>Starospišská Domáca <i>50 % · 0,5 l</i></span></li>
+      <li><img src="assets/bottles/nestville-whisky.webp" alt="Nestville Pear Liqueur 35 %, 0,7 l" width="300" height="300" loading="lazy" decoding="async"><span>Nestville Pear Liqueur <i>35 % · 0,7 l</i></span></li>
+      <li><img src="assets/bottles/noblemen-collection.webp" alt="Ján II. Gin Pink for Maria 37,5 %, 0,7 l" width="300" height="300" loading="lazy" decoding="async"><span>Ján II. Gin Pink <i>37,5 % · 0,7 l</i></span></li>
+      <li><img src="assets/bottles/gurmen.webp" alt="GUR.MEN ocot vínny 6 %, 0,5 l Premium" width="300" height="300" loading="lazy" decoding="async"><span>Gur.men ocot vínny <i>6 % · 0,5 l</i></span></li>
+    </ul>
+  </section>
 
-      <ul class="grid" id="brand-grid">
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/alternative-vodka"><span class="tile__n">01</span><span class="tile__img"><img src="assets/brands/alternative-vodka.webp" alt="Alternative Vodka" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Alternative Vodka</span><span class="tile__c">2 produkty</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/brands"><span class="tile__n">02</span><span class="tile__img"><img src="assets/brands/brands.webp" alt="Brands" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Brands</span><span class="tile__c">12 produktov</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/double-cross"><span class="tile__n">03</span><span class="tile__img"><img src="assets/brands/double-cross.webp" alt="Double Cross" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Double Cross</span><span class="tile__c">1 produkt</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/familia"><span class="tile__n">04</span><span class="tile__img"><img src="assets/brands/familia.webp" alt="Familia" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Familia</span><span class="tile__c">12 produktov</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/familia-premium"><span class="tile__n">05</span><span class="tile__img"><img src="assets/brands/familia-premium.webp" alt="Familia Premium" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Familia Premium</span><span class="tile__c">4 produkty</span><span class="tile__ext">familiapremium.sk</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/fruxi"><span class="tile__n">06</span><span class="tile__img"><img src="assets/brands/fruxi.webp" alt="Fruxi Fresh" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Fruxi Fresh</span><span class="tile__c">13 produktov</span><span class="tile__ext">fruxi.com</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/gas"><span class="tile__n">07</span><span class="tile__img"><img src="assets/brands/gas.webp" alt="Gas" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Gas</span><span class="tile__c">2 produkty</span><span class="tile__ext">gasfamilia.com</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/goral"><span class="tile__n">08</span><span class="tile__img"><img src="assets/brands/goral.webp" alt="Goral Traditional" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Goral Traditional</span><span class="tile__c">10 produktov</span><span class="tile__ext">goraltradicna.sk</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/goral-master"><span class="tile__n">09</span><span class="tile__img"><img src="assets/brands/goral-master.webp" alt="Goral Vodka Master" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Goral Vodka Master</span><span class="tile__c">6 produktov</span><span class="tile__ext">goralvodka.sk</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/gurmen"><span class="tile__n">10</span><span class="tile__img"><img src="assets/brands/gurmen.webp" alt="Gur.men" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Gur.men</span><span class="tile__c">17 produktov</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/napoleon"><span class="tile__n">11</span><span class="tile__img"><img src="assets/brands/napoleon.webp" alt="Napoleon" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Napoleon</span><span class="tile__c">4 produkty</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/nestville-whisky"><span class="tile__n">12</span><span class="tile__img"><img src="assets/brands/nestville-whisky.webp" alt="Nestville Whisky" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Nestville Whisky</span><span class="tile__c">22 produktov</span><span class="tile__ext">nestvillewhisky.sk</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/original-spisska-kosher"><span class="tile__n">13</span><span class="tile__img"><img src="assets/brands/original-spisska-kosher.webp" alt="Original Spišská Kosher" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Original Spišská Kosher</span><span class="tile__c">8 produktov</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/spis-original-1343"><span class="tile__n">14</span><span class="tile__img"><img src="assets/brands/spis-original-1343.webp" alt="Spiš Original 1343" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Spiš Original 1343</span><span class="tile__c">4 produkty</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/spisska"><span class="tile__n">15</span><span class="tile__img"><img src="assets/brands/spisska.webp" alt="Spišská Rada" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Spišská Rada</span><span class="tile__c">5 produktov</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/tatrabalsam"><span class="tile__n">16</span><span class="tile__img"><img src="assets/brands/tatrabalsam.webp" alt="Tatra Balsam" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Tatra Balsam</span><span class="tile__c">6 produktov</span><span class="tile__ext">tatrabalsam.sk</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/venuta"><span class="tile__n">17</span><span class="tile__img"><img src="assets/brands/venuta.webp" alt="Víno Venuta" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Víno</span><span class="tile__c">7 produktov</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/noblemen-collection"><span class="tile__n">18</span><span class="tile__img"><img src="assets/brands/noblemen-collection.webp" alt="Noblemen Collection" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Noblemen Collection</span><span class="tile__c">6 produktov</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/darceky"><span class="tile__n">19</span><span class="tile__img"><img src="assets/brands/darceky.webp" alt="Darčekové balenia" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Darčekové balenia</span><span class="tile__c">49 produktov</span></a></li>
-        <li class="tile reveal"><a href="https://www.gurlex.sk/produkty/spis-original"><span class="tile__n">20</span><span class="tile__img"><img src="assets/brands/spis-original.webp" alt="Spiš Originál" width="240" height="150" loading="lazy" decoding="async"></span><span class="tile__name">Spiš Originál</span><span class="tile__c">6 produktov</span><span class="tile__ext">spisoriginal.com</span></a></li>
-      </ul>
+  <!-- ─────────────────────────── INDEX (mosaic) ─────────────────────────── -->
+  <section class="index" id="index" aria-labelledby="index-h">
+    <p class="rail rail--l" aria-hidden="true">02 <span>/</span> Index značiek</p>
+
+    <div class="index__head">
+      <div>
+        <p class="sec-n">02</p>
+        <h2 id="index-h" class="sec-h calibrate">Index značiek</h2>
+      </div>
+      <p class="index__note">Veľkosť poľa zodpovedá počtu produktov v značke. Dvadsať značiek, <strong>196 produktov</strong>.</p>
     </div>
+
+    <ul class="mosaic">
+      <li class="cell cell--a"><a href="https://www.gurlex.sk/produkty/darceky">
+        <span class="cell__n">19</span>
+        <span class="cell__img"><img src="assets/brands/darceky.webp" alt="Darčekové balenia" width="300" height="200" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Darčekové balenia</span><span class="cell__c"><b>49</b> produktov</span></span>
+      </a></li>
+      <li class="cell cell--a"><a href="https://www.gurlex.sk/produkty/nestville-whisky">
+        <span class="cell__n">12</span>
+        <span class="cell__img"><img src="assets/brands/nestville-whisky.webp" alt="Nestville Whisky" width="300" height="200" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Nestville Whisky</span><span class="cell__c"><b>22</b> produktov <i>nestvillewhisky.sk</i></span></span>
+      </a></li>
+      <li class="cell cell--b"><a href="https://www.gurlex.sk/produkty/gurmen">
+        <span class="cell__n">10</span>
+        <span class="cell__img"><img src="assets/brands/gurmen.webp" alt="Gur.men" width="240" height="150" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Gur.men</span><span class="cell__c"><b>17</b> produktov</span></span>
+      </a></li>
+      <li class="cell cell--b"><a href="https://www.gurlex.sk/produkty/fruxi">
+        <span class="cell__n">06</span>
+        <span class="cell__img"><img src="assets/brands/fruxi.webp" alt="Fruxi Fresh" width="240" height="150" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Fruxi Fresh</span><span class="cell__c"><b>13</b> produktov <i>fruxi.com</i></span></span>
+      </a></li>
+      <li class="cell cell--b"><a href="https://www.gurlex.sk/produkty/brands">
+        <span class="cell__n">02</span>
+        <span class="cell__img"><img src="assets/brands/brands.webp" alt="Brands" width="240" height="150" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Brands</span><span class="cell__c"><b>12</b> produktov</span></span>
+      </a></li>
+      <li class="cell cell--b"><a href="https://www.gurlex.sk/produkty/familia">
+        <span class="cell__n">04</span>
+        <span class="cell__img"><img src="assets/brands/familia.webp" alt="Familia" width="240" height="150" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Familia</span><span class="cell__c"><b>12</b> produktov</span></span>
+      </a></li>
+      <li class="cell cell--b"><a href="https://www.gurlex.sk/produkty/goral">
+        <span class="cell__n">08</span>
+        <span class="cell__img"><img src="assets/brands/goral.webp" alt="Goral Traditional" width="240" height="150" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Goral Traditional</span><span class="cell__c"><b>10</b> produktov <i>goraltradicna.sk</i></span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/original-spisska-kosher">
+        <span class="cell__n">13</span>
+        <span class="cell__img"><img src="assets/brands/original-spisska-kosher.webp" alt="Original Spišská Kosher" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Original Spišská Kosher</span><span class="cell__c"><b>8</b> produktov</span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/venuta">
+        <span class="cell__n">17</span>
+        <span class="cell__img"><img src="assets/brands/venuta.webp" alt="Víno Venuta" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Víno</span><span class="cell__c"><b>7</b> produktov</span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/goral-master">
+        <span class="cell__n">09</span>
+        <span class="cell__img"><img src="assets/brands/goral-master.webp" alt="Goral Vodka Master" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Goral Vodka Master</span><span class="cell__c"><b>6</b> produktov <i>goralvodka.sk</i></span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/tatrabalsam">
+        <span class="cell__n">16</span>
+        <span class="cell__img"><img src="assets/brands/tatrabalsam.webp" alt="Tatra Balsam" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Tatra Balsam</span><span class="cell__c"><b>6</b> produktov <i>tatrabalsam.sk</i></span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/noblemen-collection">
+        <span class="cell__n">18</span>
+        <span class="cell__img"><img src="assets/brands/noblemen-collection.webp" alt="Noblemen Collection" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Noblemen Collection</span><span class="cell__c"><b>6</b> produktov</span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/spis-original">
+        <span class="cell__n">20</span>
+        <span class="cell__img"><img src="assets/brands/spis-original.webp" alt="Spiš Originál" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Spiš Originál</span><span class="cell__c"><b>6</b> produktov <i>spisoriginal.com</i></span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/spisska">
+        <span class="cell__n">15</span>
+        <span class="cell__img"><img src="assets/brands/spisska.webp" alt="Spišská Rada" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Spišská Rada</span><span class="cell__c"><b>5</b> produktov</span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/familia-premium">
+        <span class="cell__n">05</span>
+        <span class="cell__img"><img src="assets/brands/familia-premium.webp" alt="Familia Premium" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Familia Premium</span><span class="cell__c"><b>4</b> produkty <i>familiapremium.sk</i></span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/napoleon">
+        <span class="cell__n">11</span>
+        <span class="cell__img"><img src="assets/brands/napoleon.webp" alt="Napoleon" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Napoleon</span><span class="cell__c"><b>4</b> produkty</span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/spis-original-1343">
+        <span class="cell__n">14</span>
+        <span class="cell__img"><img src="assets/brands/spis-original-1343.webp" alt="Spiš Original 1343" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Spiš Original 1343</span><span class="cell__c"><b>4</b> produkty</span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/alternative-vodka">
+        <span class="cell__n">01</span>
+        <span class="cell__img"><img src="assets/brands/alternative-vodka.webp" alt="Alternative Vodka" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Alternative Vodka</span><span class="cell__c"><b>2</b> produkty</span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/gas">
+        <span class="cell__n">07</span>
+        <span class="cell__img"><img src="assets/brands/gas.webp" alt="Gas" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Gas</span><span class="cell__c"><b>2</b> produkty <i>gasfamilia.com</i></span></span>
+      </a></li>
+      <li class="cell"><a href="https://www.gurlex.sk/produkty/double-cross">
+        <span class="cell__n">03</span>
+        <span class="cell__img"><img src="assets/brands/double-cross.webp" alt="Double Cross" width="200" height="130" loading="lazy" decoding="async"></span>
+        <span class="cell__meta"><span class="cell__name">Double Cross</span><span class="cell__c"><b>1</b> produkt</span></span>
+      </a></li>
+    </ul>
   </section>
 
   <!-- ─────────────────────────── VÝROBCOVIA ─────────────────────────── -->
   <section class="makers" id="vyrobcovia" aria-labelledby="makers-h">
-    <div class="shell">
-      <div class="makers__head">
-        <p class="idx">03</p>
-        <h2 id="makers-h">O výrobky ktorého výrobcu máte záujem?</h2>
-      </div>
+    <p class="rail rail--l" aria-hidden="true">03 <span>/</span> Výrobcovia</p>
 
-      <div class="makers__row">
-        <a class="maker" href="http://www.gasfamilia.com/" rel="noopener">
-          <span class="maker__logo"><img src="assets/brand/gasfamilia.webp" alt="GAS Familia" width="300" height="120" loading="lazy" decoding="async"></span>
-          <span class="maker__txt">
-            <strong>GAS FAMILIA s.r.o.</strong>
-            <span>Výrobca destilátov a liehovín zo Starej Ľubovne. Sme jeho výhradný distribútor v krajinách V4.</span>
-          </span>
-          <span class="maker__go" aria-hidden="true">gasfamilia.com →</span>
-        </a>
+    <div class="makers__head">
+      <p class="sec-n">03</p>
+      <h2 id="makers-h" class="sec-h calibrate">Výrobcovia</h2>
+      <p class="makers__q">O výrobky ktorého výrobcu máte záujem?</p>
+    </div>
 
-        <a class="maker" href="https://www.nestville.sk/" rel="noopener">
-          <span class="maker__logo"><img src="assets/brand/nestville.webp" alt="Nestville Distillery" width="300" height="120" loading="lazy" decoding="async"></span>
-          <span class="maker__txt">
-            <strong>Nestville Distillery</strong>
-            <span>Prvá slovenská whisky z Hniezdneho, vrátane vlastného návštevníckeho parku.</span>
-          </span>
-          <span class="maker__go" aria-hidden="true">nestville.sk →</span>
-        </a>
-      </div>
+    <div class="makers__split">
+      <a class="maker" href="http://www.gasfamilia.com/" rel="noopener">
+        <span class="maker__logo"><img src="assets/brand/gasfamilia.webp" alt="GAS Familia" width="300" height="120" loading="lazy" decoding="async"></span>
+        <span class="maker__name">GAS Familia s.r.o.</span>
+        <span class="maker__txt">Výrobca destilátov a liehovín zo Starej Ľubovne. Sme jeho výhradný distribútor v krajinách V4.</span>
+        <span class="maker__go">gasfamilia.com</span>
+      </a>
+      <a class="maker" href="https://www.nestville.sk/" rel="noopener">
+        <span class="maker__logo"><img src="assets/brand/nestville.webp" alt="Nestville Distillery" width="300" height="120" loading="lazy" decoding="async"></span>
+        <span class="maker__name">Nestville Distillery</span>
+        <span class="maker__txt">Prvá slovenská whisky z Hniezdneho, vrátane vlastného návštevníckeho parku.</span>
+        <span class="maker__go">nestville.sk</span>
+      </a>
     </div>
   </section>
 
   <!-- ─────────────────────────── NA STIAHNUTIE ─────────────────────────── -->
   <section class="dl" id="na-stiahnutie" aria-labelledby="dl-h">
-    <div class="shell dl__grid">
-      <div class="dl__head">
-        <p class="idx">04</p>
-        <h2 id="dl-h">Na stiahnutie</h2>
-      </div>
-      <ul class="dl__list">
-        <li>
-          <a href="https://www.gurlex.sk/uploads/article_44_24_02_20_produktovykatalog_mail.pdf">
-            <span class="dl__name">Produktový katalóg</span>
-            <span class="dl__kind">PDF</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.gurlex.sk/videa-a-reklamne-spoty">
-            <span class="dl__name">Videá a reklamné spoty</span>
-            <span class="dl__kind">Galéria</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.gasfamilia.com/logistika/">
-            <span class="dl__name">Logistika</span>
-            <span class="dl__kind">gasfamilia.com</span>
-          </a>
-        </li>
-      </ul>
+    <p class="rail rail--l" aria-hidden="true">04 <span>/</span> Na stiahnutie</p>
+
+    <div class="dl__head">
+      <p class="sec-n">04</p>
+      <h2 id="dl-h" class="sec-h calibrate">Na stiahnutie</h2>
     </div>
+
+    <ul class="dl__list">
+      <li><a href="https://www.gurlex.sk/uploads/article_44_24_02_20_produktovykatalog_mail.pdf">
+        <span class="dl__i">01</span><span class="dl__name">Produktový katalóg</span><span class="dl__kind">PDF</span>
+      </a></li>
+      <li><a href="https://www.gurlex.sk/videa-a-reklamne-spoty">
+        <span class="dl__i">02</span><span class="dl__name">Videá a reklamné spoty</span><span class="dl__kind">Galéria</span>
+      </a></li>
+      <li><a href="https://www.gasfamilia.com/logistika/">
+        <span class="dl__i">03</span><span class="dl__name">Logistika</span><span class="dl__kind">gasfamilia.com</span>
+      </a></li>
+    </ul>
   </section>
 
 </main>
 
 <!-- ─────────────────────────── FOOTER ─────────────────────────── -->
 <footer class="ft" id="kontakt">
-  <div class="shell">
-    <div class="ft__top">
-      <p class="idx">05</p>
-      <h2>Kontakt</h2>
-    </div>
-
-    <div class="ft__grid">
-      <div class="ft__col">
-        <h3>Adresa</h3>
-        <address>
-          <strong>Gurlex s.r.o.</strong><br>
-          Prešovská 8<br>
-          064 01 Stará Ľubovňa<br>
-          Slovensko
-        </address>
-      </div>
-
-      <div class="ft__col">
-        <h3>Telefón</h3>
-        <p>
-          <a href="tel:+421527147125">+421 52 71 47 125</a><br>
-          <a href="tel:+421915923805">+421 915 923 805</a>
-        </p>
-        <h3 class="ft__h-sp">Fax</h3>
-        <p>+421 52 71 47 216</p>
-      </div>
-
-      <div class="ft__col">
-        <h3>E-mail</h3>
-        <p>
-          <a href="mailto:gurlex@gurlex.sk">gurlex@gurlex.sk</a><br>
-          <a href="mailto:forint@gurlex.sk">forint@gurlex.sk</a>
-        </p>
-        <h3 class="ft__h-sp">Sociálne siete</h3>
-        <p><a href="https://www.facebook.com/gurlex.sk/" rel="noopener">Facebook</a></p>
-      </div>
-
-      <div class="ft__col">
-        <h3>Krajiny</h3>
-        <ul class="ft__locales">
-          <li><a href="https://www.gurlex.sk/" hreflang="sk">Slovensky</a></li>
-          <li><a href="https://www.gurlex.cz/" hreflang="cs">Česky</a></li>
-          <li><a href="https://www.gurlex.pl/" hreflang="pl">Polski</a></li>
-          <li><a href="https://www.gurlex.hu/" hreflang="hu">Magyar</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <p class="ft__resp">Alkohol môže byť škodlivý. Pite zodpovedne. Naše produkty sú určené len osobám starším ako 18 rokov.</p>
-
-    <div class="ft__base">
-      <p>&copy; 2026 Gurlex s.r.o. Všetky práva vyhradené.
-        <a href="https://www.gurlex.sk/ochrana-osobnych-udajov">Ochrana osobných údajov</a>
-      </p>
-      <p class="ft__credit">Grafické návrhy značiek: Roman Janovský</p>
-    </div>
-
-    <aside class="concept">
-      <p><strong>Nejde o oficiálnu stránku.</strong> Toto je neoficiálny návrh redizajnu (koncept) vytvorený ako ukážka k pracovnej ponuke. Obsah, značky a logá patria spoločnosti Gurlex s.r.o. a jej dodávateľom. Živá stránka je na <a href="https://www.gurlex.sk/">www.gurlex.sk</a>.</p>
-      <button type="button" id="regate" class="concept__btn">Zobraziť vekovú bránu znova</button>
-    </aside>
+  <div class="ft__head">
+    <p class="sec-n">05</p>
+    <h2 class="sec-h calibrate">Kontakt</h2>
   </div>
+
+  <div class="ft__grid">
+    <div class="ft__col">
+      <h3>Adresa</h3>
+      <address><strong>Gurlex s.r.o.</strong><br>Prešovská 8<br>064 01 Stará Ľubovňa<br>Slovensko</address>
+    </div>
+    <div class="ft__col">
+      <h3>Telefón</h3>
+      <p><a href="tel:+421527147125">+421 52 71 47 125</a><br><a href="tel:+421915923805">+421 915 923 805</a></p>
+      <h3 class="sp">Fax</h3>
+      <p>+421 52 71 47 216</p>
+    </div>
+    <div class="ft__col">
+      <h3>E-mail</h3>
+      <p><a href="mailto:gurlex@gurlex.sk">gurlex@gurlex.sk</a><br><a href="mailto:forint@gurlex.sk">forint@gurlex.sk</a></p>
+      <h3 class="sp">Sociálne siete</h3>
+      <p><a href="https://www.facebook.com/gurlex.sk/" rel="noopener">Facebook</a></p>
+    </div>
+    <div class="ft__col">
+      <h3>Krajiny</h3>
+      <ul class="ft__loc">
+        <li><a href="https://www.gurlex.sk/" hreflang="sk">Slovensky</a></li>
+        <li><a href="https://www.gurlex.cz/" hreflang="cs">Česky</a></li>
+        <li><a href="https://www.gurlex.pl/" hreflang="pl">Polski</a></li>
+        <li><a href="https://www.gurlex.hu/" hreflang="hu">Magyar</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="ft__resp">Alkohol môže byť škodlivý. Pite zodpovedne. Naše produkty sú určené len osobám starším ako 18 rokov.</p>
+
+  <div class="ft__base">
+    <p>&copy; 2026 Gurlex s.r.o. Všetky práva vyhradené. <a href="https://www.gurlex.sk/ochrana-osobnych-udajov">Ochrana osobných údajov</a></p>
+    <p>Grafické návrhy značiek: Roman Janovský</p>
+  </div>
+
+  <aside class="concept">
+    <p><strong>Nejde o oficiálnu stránku.</strong> Toto je neoficiálny návrh redizajnu (koncept) vytvorený ako ukážka k pracovnej ponuke. Obsah, značky a logá patria spoločnosti Gurlex s.r.o. a jej dodávateľom. Živá stránka je na <a href="https://www.gurlex.sk/">www.gurlex.sk</a>.</p>
+    <button type="button" id="regate" class="concept__btn">Zobraziť vekovú bránu znova</button>
+  </aside>
+
+  <p class="ft__wordmark" aria-hidden="true">Gurlex</p>
 </footer>
 
 <script src="app.js" defer></script>

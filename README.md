@@ -18,18 +18,46 @@ If a rights holder wants this taken down, open an issue and it will be removed.
 
 ---
 
-## What this demonstrates
+## The design problem
 
-Every piece of content from the current homepage is carried over: the age gate, full navigation, four country locales, the five company paragraphs, all 20 brands, both producers, all three downloads, and the complete contact block. Nothing was dropped to make the design easier.
+Gurlex distributes **20 brands whose packaging actively clashes**: folk-illustrated blue Goral, black-and-gold Tatra Balsam, kosher Spišská, hot-pink Fruxi, gilded Napoleon. A site that adds its own decoration ends up fighting all twenty at once. The current site buries them under Bootstrap chrome.
 
-The point is that the same content can be presented far better, and measurably lighter.
+Two decisions follow from that:
 
-### Measured, same content
+1. **The interface never uses colour.** The page is drenched in Gurlex's own blue; the products are the only things allowed to carry colour. The one bright block on the page is the brand index.
+2. **The layout is structural, not decorative.** A visible hairline column grid runs the full page like a drafting sheet, content is full-bleed rather than boxed in a centred container, and display type is cropped by the viewport edge. It should look engineered, not styled.
+
+### The brand index is information design, not a card grid
+
+The centrepiece is a mosaic where **cell size encodes catalogue depth**, using the real product counts scraped from the live site:
+
+| Tier | Products | Cell |
+|---|---|---|
+| Darčekové balenia, Nestville Whisky | 49, 22 | 2 × 2 |
+| Gur.men, Fruxi, Brands, Familia, Goral | 17 → 10 | 2 × 1 |
+| the remaining 13 brands | 8 → 1 | 1 × 1 |
+
+Cells share 1px seams with no gutters, no rounded corners and no shadows. The asymmetry carries meaning, which is what keeps it from being the uniform card grid it replaces.
+
+## Design system
+
+- **Colour.** Committed/drenched strategy in OKLCH, built around the brand's existing `#0033ab`. Nothing is `#000` or `#fff`; every neutral is tinted toward the brand hue. The warm vermilion accent comes from the red "Gr" already in the Gurlex wordmark, so the cold blue gets a counterpoint that is part of the identity rather than invented. A separate darkened token (`--accent-on-light` / `--accent-dk`) exists because the base accent only reaches 2.9:1 on the frost surfaces.
+- **Type.** One family, [Archivo](https://fonts.google.com/specimen/Archivo) variable, using its **width axis** as voice: 125% expanded for display, 66% condensed for metadata, 100% for body. Weight runs 200 → 800. Industrial-signage precision rather than the heritage-serif reflex that spirits brands default to. Self-hosted WOFF2, latin + latin-ext subsets, no third-party font CDN.
+- **Scale.** Roughly 8× between the display word and the metadata, with section headings at `clamp(2.6rem, …, 7rem)` so the page keeps commanding attention after the fold.
+- **Slovak typography.** Headings never go below `line-height: 1.06`. Slovak stacks ´ ˇ ˆ ° above capitals, and tighter leading makes accents collide with the line above. This was a real bug, caught in review at `line-height: 0.9`.
+- **Motion.** Entrance motion is **native CSS scroll-driven animation** (`animation-timeline: view()`): section headings calibrate from condensed to expanded as they enter, like an instrument settling. Zero JavaScript, and because it only animates `font-stretch`, a browser without support simply renders the final state. Plus a portfolio ticker and a drag-scrollable product rail. All of it sits behind `prefers-reduced-motion`.
+- **Depth.** The hero bottle is a real transparent cut-out that bleeds past the sheet edge, with the display word crossing *in front* of it. The footer closes with the wordmark cropped by the bottom edge.
+
+---
+
+## Measured, same content
+
+Every piece of content from the current homepage is carried over: age gate, full navigation, four country locales, the five company paragraphs, all 20 brands, both producers, all three downloads, and the complete contact block. Nothing was dropped to make the design easier.
 
 | | Current gurlex.sk | This concept |
 |---|---|---|
-| Page weight (first load) | **9,818 KB** | **237 KB** |
-| Requests | 49 | 6 |
+| Page weight (first load) | **9,818 KB** | **271 KB** |
+| Requests | 49 | 8 |
 | Largest single image | 2,943 KB | 57 KB |
 | Modern image formats | none | AVIF + WebP |
 | Lazy loading | none | 28 of 31 images |
@@ -44,41 +72,36 @@ The point is that the same content can be presented far better, and measurably l
 | Third-party CDNs | 5 | 0 |
 | jQuery / Bootstrap | 2018 versions | none |
 
-Page weight was measured from `performance.getEntriesByType('resource')` on both sites. Of the 237 KB here, ~176 KB is the self-hosted variable font, a deliberate trade to remove all third-party CDN and Google Fonts dependencies.
+Page weight was measured from `performance.getEntriesByType('resource')` on both sites. Of the 271 KB here, ~176 KB is the self-hosted variable font, a deliberate trade to remove all third-party CDN and Google Fonts dependencies.
 
-### Accessibility
+## Accessibility
 
-- All 25 sampled text/background pairs pass WCAG AA contrast, verified by computing relative luminance directly from the OKLCH values rather than eyeballing it. The warm accent needed a separate darkened token (`--accent-on-light`) for use on the light tiles, where the base accent only reached 2.9:1.
-- One `<h1>`, no skipped heading levels.
-- Age gate is a real `role="dialog"` with `aria-modal`, a focus trap, synchronous focus move, and a decline path (the current site offers only "I am over 18").
+- **All 35 sampled text/background pairs pass WCAG AA contrast**, verified by converting the OKLCH values to relative luminance in code rather than eyeballing them.
+- One `<h1>`, no skipped heading levels, landmarks throughout.
+- Age gate is a real `role="dialog"` with `aria-modal`, a focus trap, a synchronous focus move, and a decline path (the current site offers only "I am over 18").
 - Nav and disclosure menus use `aria-expanded` / `aria-controls`, work by keyboard, and close on Escape and outside click.
+- The ticker's duplicated copy is `aria-hidden`, so screen readers and crawlers see the brand list once.
 - Skip link, visible focus rings, 24px+ targets for standalone links. The two sub-24px links that remain are inline links inside sentences, which WCAG 2.2 SC 2.5.8 exempts.
 - Single correct viewport meta, so pinch-zoom works. The current site ships two, the second disabling zoom.
-- `prefers-reduced-motion` honoured.
-- Content never depends on JavaScript to become visible: reveal animations are opt-in (`html.anim`), added by JS only once it can also undo them, with a timeout and `visibilitychange` safety net. Without JS the page renders fully.
+- `prefers-reduced-motion` disables the ticker, the scroll-driven calibration and all transitions.
+- Content never depends on JavaScript to become visible. Without JS the page renders in full; the nav degrades to a visible list.
 
----
+### Bugs found and fixed during review
 
-## Design notes
+Worth listing, because they are the kind of thing that ships silently:
 
-**The problem.** Gurlex distributes 20 brands whose packaging designs actively clash: folk-illustrated blue Goral, black-and-gold Tatra Balsam, kosher Spišská, hot-pink Fruxi. A site that adds its own decoration fights all twenty at once. The current site buries them under Bootstrap chrome.
-
-**The idea.** Drench the page in Gurlex's own blue and make the **brand tiles the only light surfaces on the entire page**, so the products are literally the only things that light up. Colour comes from the bottles, never from the interface.
-
-- **Colour.** Committed/drenched strategy in OKLCH, built around the brand's existing `#0033ab`. Nothing is `#000` or `#fff`; every neutral is tinted toward the brand hue. The warm vermilion accent is taken from the red "Gr" in the existing Gurlex wordmark, giving the cold blue a counterpoint that is already part of the identity.
-- **Type.** One family, [Archivo](https://fonts.google.com/specimen/Archivo) variable, using its **width axis** as voice: expanded 118% for display, 88% semi-condensed for labels, 100% for body. Industrial-signage precision rather than the heritage-serif reflex that spirits brands default to. Self-hosted WOFF2, latin + latin-ext subsets.
-- **Slovak typography.** Headings never go below `line-height: 1.06`. Slovak stacks ´ ˇ ˆ ° above capitals, and tighter leading makes accents collide with the line above. This was a real bug caught in review at `line-height: 0.9`.
-- **Layout.** Asymmetric, not centred stacks. Section heads sit in a narrow sticky rail with a numbered catalogue index (01–05), because a distributor's site *is* a catalogue. Brand tiles use explicit grid rows so the number, logo, name, count and external-site line stay aligned across a row whether or not a brand has an external site.
-- **Imagery.** The hero bottle is a real transparent cut-out from the client's own assets. The bright shelf band uses six real product shots with `mix-blend-mode: multiply`, which dissolves their white studio backgrounds into the frost surface.
-- **Motion.** One orchestrated entrance with staggered reveals, exponential ease-out, transform and opacity only, fully disabled under reduced-motion.
-
-Product counts on each tile (2, 12, 49...) are real, scraped from the live site: 196 products across 20 brands.
+1. **`line-height: 0.9` broke Slovak diacritics** — É, Á, Ú collided with the line above.
+2. **The age gate was not actually a modal.** A `body > *:not(…)` rule outranked `.gate`'s own `position: fixed` on specificity and silently turned the overlay into an in-flow block, leaving the header visible below it.
+3. **Horizontal overflow on mobile** (417px in a 390px viewport) from the deliberately-bleeding display word. Fixed with `overflow-x: clip`, not `hidden`, so the sticky header keeps working.
+4. **Silhouetting the brand logos destroyed them.** An earlier pass unified the clashing logos to monochrome silhouettes and revealed colour on hover; on complex artwork like Gur.men and Fruxi this produced unreadable grey blobs. Reverted: logos stay full-colour and the mosaic's asymmetry does the unifying instead.
+5. **Optical misalignment in the index** where only some brands have an external-site line. Fixed with explicit grid rows that reserve the track.
+6. **JPEG logos showed white boxes** on the light cells; `mix-blend-mode: multiply` dissolves the studio background into the surface.
 
 ---
 
 ## Stack
 
-Deliberately dependency-free: hand-written HTML, CSS and ~150 lines of vanilla JS. No framework, no build step, no npm install. It deploys as static files and demonstrates the performance argument without any tooling to explain.
+Deliberately dependency-free: hand-written HTML, CSS and ~160 lines of vanilla JS. No framework, no build step, no `npm install`. It deploys as static files and demonstrates the performance argument without any tooling to explain.
 
 For production the recommendation is different: **Next.js + Payload CMS + Postgres**, so the content is editable, the four locales share one codebase, and the product model is structured for e-commerce later. This repo is the visual and technical proof, not the proposed architecture.
 
@@ -93,18 +116,18 @@ python3 -m http.server 4173
 
 Any static server works. There is nothing to build.
 
-The age gate persists its answer in `localStorage`. Use the **"Zobraziť vekovú bránu znova"** button in the footer to reset it when demoing. In production this check belongs server-side, so that deep links cannot bypass it, which is how the current site does it and one of the few things it gets right.
+The age gate persists its answer in `localStorage`. Use the **"Zobraziť vekovú bránu znova"** button in the footer to reset it when demoing. In production this check belongs server-side so deep links cannot bypass it, which is how the current site does it and one of the few things it gets right.
 
 ## Files
 
 ```
 index.html   markup, metadata, structured data
-styles.css   design tokens + all styling
-app.js       age gate, nav disclosures, reveal observer
+styles.css   design tokens, grid system, all styling
+app.js       age gate, nav disclosures, ticker clone, drag rail
 assets/
   fonts/     Archivo variable, latin + latin-ext WOFF2
   brands/    20 brand logos (WebP)
-  bottles/   6 product shots for the shelf band (WebP)
+  bottles/   6 product shots for the drag rail (WebP)
   brand/     wordmark + two producer logos (WebP)
   bottle-hero.{avif,webp}
 ```
