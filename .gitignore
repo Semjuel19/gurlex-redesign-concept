@@ -3,3 +3,5 @@ node_modules/
 _preview.html
 _sheet.html
 _fonts.html
+_visible.html
+*/_visible.html

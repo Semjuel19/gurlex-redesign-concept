@@ -53,6 +53,7 @@ shared/site.js      age gate, navigation, and the Motion wrapper
 lib/motion.min.js   Motion, tree-shaken to the APIs used (73 KB, 27 KB gzipped)
 assets/             fonts, brand marks, product shots, cut-outs
 build/              content.mjs, partials.mjs, lanes/*.mjs, build.mjs
+                    make-visible-test.mjs (reveal-system regression check)
 ```
 
 ## Building
@@ -76,22 +77,47 @@ structure does.
 
 **Motion.** Animation uses [Motion](https://motion.dev) (motion.dev), the engine
 behind Framer Motion, via its vanilla API — so there is no React and no build
-step, but real spring physics, stagger and scroll-linked motion. It is bundled
-down to only the imported functions and self-hosted.
+step, but real stagger and scroll-linked motion. It is bundled down to only the
+imported functions and self-hosted.
+
+Two of its APIs are shaped in ways worth knowing. `scroll()` picks its calling
+convention from the callback's **arity** and from whether a target was given:
+with a target it always calls `onScroll(progress, info)`, so a one-argument
+callback receives the progress **number**, not the info object. Reading
+`.y.progress` off it throws on every scroll frame, inside Motion's shared frame
+loop, which starves every other animation on the page. And springs have no fixed
+duration, which makes it impossible to size a guard timer for them, so all
+easing here is exponential ease-out.
 
 Everything is progressive enhancement. The pages are complete and readable with
-scripting off, and `shared/site.js` holds three guarantees that matter more than
-they look:
+scripting off, and `shared/site.js` treats a stranded element as the one
+unacceptable outcome. A reveal is undone by five independent mechanisms, because
+each one of them has failed in practice:
 
 - Choreography is **held until the document is actually visible**. A page opened
   in a background tab never advances a frame, so an animation started there sits
   on its first keyframe indefinitely — and with `opacity: 0` as that keyframe,
   that is an invisible page.
-- If nothing has started a few seconds in, the hidden state is dropped entirely:
-  a dead or unsupported observer must never cost the visitor the content.
-- Recovering an element **completes its animation** rather than just clearing the
-  inline styles, because an abandoned animation still owns the property and
-  writes its start value back on the next tick.
+- Every animation carries a **timer sized to its own duration**. `finished` can
+  stay unresolved forever: a suspended frame loop, a cancelled animation, a tab
+  that stopped rendering.
+- Scroll triggers are watched **geometrically as well as by observer**, same
+  element and same threshold. An `IntersectionObserver` that never reports would
+  otherwise leave every section below the fold empty.
+- Anything **already scrolled past** is revealed unconditionally, since a fast
+  scroll or an anchor jump can carry an element through the viewport between two
+  checks.
+- Anything marked `data-reveal` that **no lane claimed** settles by itself.
+  The attribute only means "may be revealed"; if a selector drifts, the element
+  would otherwise be hidden with nothing left to un-hide it.
+
+Settling also clears the inline styles the animation left behind, not just the
+class: Motion writes an inline `opacity: 0` as its start value, and an inline
+declaration outranks the stylesheet.
+
+`node build/make-visible-test.mjs` builds throwaway copies that force the
+visible code path, so this can be verified in a tab that is never visible. See
+that file for the procedure.
 
 **Product shots.** The supplied shots are opaque, on white. That only composites
 cleanly with `mix-blend-mode: multiply`, which silently stops working inside any

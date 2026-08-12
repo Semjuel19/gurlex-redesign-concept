@@ -45,7 +45,7 @@
     '.shelf__row li',
     () => [
       { opacity: [0, 1], y: [40, 0] },
-      { type: 'spring', stiffness: 100, damping: 18 },
+      { duration: 0.95, ease: GX.ease },
     ],
     { stagger: 0.08, amount: 0.15 }
   )
@@ -62,7 +62,7 @@
     '.label',
     () => [
       { opacity: [0, 1], y: [26, 0] },
-      { type: 'spring', stiffness: 140, damping: 20 },
+      { duration: 0.7, ease: GX.ease },
     ],
     { stagger: 0.045, amount: 0.2 }
   )
@@ -76,17 +76,22 @@
   const obj = document.querySelector('.hero__object')
   const stage = document.querySelector('.hero__stage')
   if (obj && stage && M.scroll) {
+    /* The callback takes the progress number, not an info object. Motion picks
+       its API from the callback's arity and from whether a target was given:
+       with a target it always calls onScroll(info[axis].progress, info). A
+       one-argument callback reading `.y.progress` therefore throws on every
+       scroll frame — inside Motion's shared frame loop, which starves every
+       other animation on the page and leaves the reveals stuck at opacity 0. */
     M.scroll(
-      (info) => {
-        const p = info.y.progress
+      (progress) => {
         /* The lamp is driven through custom properties the pseudo-element
            reads, and the object through `translate` rather than `transform`,
            so none of this fights the entrance animation for the same property. */
-        obj.style.setProperty('--disc-y', `${p * 80}px`)
-        obj.style.setProperty('--disc-s', String(1 + p * 0.14))
-        obj.style.translate = `0 ${p * 30}px`
+        obj.style.setProperty('--disc-y', `${progress * 80}px`)
+        obj.style.setProperty('--disc-s', String(1 + progress * 0.14))
+        obj.style.translate = `0 ${progress * 30}px`
       },
-      { target: stage, offset: ['start start', 'end start'] }
+      { target: stage, axis: 'y', offset: ['start start', 'end start'] }
     )
   }
 })()

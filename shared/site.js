@@ -230,10 +230,7 @@
 
     /* Backstop for an observer that never reports. If the page has been visible
        for a few seconds and not one animation has started, the trigger is
-       broken rather than merely waiting, so drop the whole hidden state.
-       Deliberately not a per-element viewport sweep: that would steal the
-       reveal from elements sitting just below the fold, whose observers are
-       working correctly and simply have not been scrolled to yet. */
+       broken rather than merely waiting, so drop the whole hidden state. */
     setTimeout(() => {
       if (started === 0) {
         pending.forEach((_, el) => reveal(el))
@@ -244,18 +241,96 @@
 
   let started = 0
 
+  /* Settling is what actually makes an element visible for good: it drops the
+     class the hidden state hangs off and clears whatever inline values the
+     animation left on the element. Both halves matter — Motion writes an inline
+     `opacity: 0` as its start value, and an inline declaration outranks the
+     stylesheet, so removing the class alone can leave the element invisible. */
   const settle = (el) => {
     el.classList.add('is-in')
+    el.style.opacity = ''
+    el.style.transform = ''
     pending.delete(el)
   }
 
-  const track = (el, anim) => {
+  /* Never trust an animation to report its own completion. `finished` can stay
+     unresolved indefinitely — a suspended frame loop, a cancelled animation, a
+     tab that stopped rendering — and an unsettled element stays at opacity 0
+     forever. So every animation also gets a timer sized to its own length. */
+  const track = (el, anim, opts) => {
     started++
     pending.set(el, anim)
     anim.finished.then(
       () => settle(el),
       () => settle(el)
     )
+    const secs = (opts.delay || 0) + (opts.duration || 1.2)
+    setTimeout(() => settle(el), secs * 1000 + 700)
+  }
+
+  /* ---------------------------------------------------------------------------
+     Geometric fallback for scroll triggers.
+     An IntersectionObserver that never reports leaves every element below the
+     fold hidden, and the page looks like a set of empty sections. This watches
+     the same elements with the same threshold and fires the same callback, so
+     whichever mechanism gets there first wins and the other becomes a no-op.
+     --------------------------------------------------------------------------- */
+  const watch = []
+  let ticker = null
+
+  const inViewport = (el, amount) => {
+    const r = el.getBoundingClientRect()
+    /* Already scrolled past. A fast scroll or a jump to an anchor can carry an
+       element through the viewport between two checks, and it must never be
+       left hidden above the fold. */
+    if (r.bottom < 0) return true
+    if (r.top > innerHeight) return false
+    if (r.height === 0) return true
+    /* taller than the viewport: it can never satisfy a ratio, so treat it as in
+       view once it spans the screen */
+    if (r.height > innerHeight) return r.top <= 0 && r.bottom >= 0
+    const shown = Math.min(r.bottom, innerHeight) - Math.max(r.top, 0)
+    return shown / r.height >= Math.min(amount, 0.95)
+  }
+
+  const sweep = () => {
+    for (let i = watch.length - 1; i >= 0; i--) {
+      const it = watch[i]
+      if (it.done()) {
+        watch.splice(i, 1)
+        continue
+      }
+      if (inViewport(it.el, it.amount)) {
+        watch.splice(i, 1)
+        it.run()
+      }
+    }
+    if (!watch.length && ticker) {
+      clearInterval(ticker)
+      removeEventListener('scroll', onScrollSweep)
+      ticker = null
+    }
+  }
+
+  let queued = false
+  function onScrollSweep() {
+    if (queued) return
+    queued = true
+    requestAnimationFrame(() => {
+      queued = false
+      sweep()
+    })
+  }
+
+  const observeGeometrically = (el, amount, run, done) => {
+    watch.push({ el, amount, run, done })
+    if (!ticker) {
+      /* an interval as well as the scroll listener: timers keep running in
+         situations where neither scroll events nor observers do */
+      ticker = setInterval(sweep, 800)
+      addEventListener('scroll', onScrollSweep, { passive: true })
+      window.addEventListener('pagehide', () => clearInterval(ticker), { once: true })
+    }
   }
 
   const GX = {
@@ -276,7 +351,8 @@
       defer(() => {
         items.forEach((el, i) => {
           const [keyframes, opts] = build(el, i)
-          track(el, M.animate(el, keyframes, { delay: base + i * stagger, ...opts }))
+          const o = { delay: base + i * stagger, ...opts }
+          track(el, M.animate(el, keyframes, o), o)
         })
       })
     },
@@ -304,9 +380,13 @@
             burst = now - lastFire > 150 ? 0 : burst + 1
             lastFire = now
             const [keyframes, opts] = build(el, i)
-            track(el, M.animate(el, keyframes, { delay: burst * stagger, ...opts }))
+            const o = { delay: burst * stagger, ...opts }
+            track(el, M.animate(el, keyframes, o), o)
           }
           stop = M.inView(el, run, { amount })
+          /* Same element, same threshold, same callback, measured directly.
+             Whichever fires first wins; `fired` makes the other a no-op. */
+          observeGeometrically(el, amount, run, () => fired)
         })
       })
     },
@@ -342,19 +422,40 @@
               el.textContent = String(to)
             },
           })
+          /* the real value is already in the HTML, but if the counter is
+             interrupted mid-count the element would keep a partial number */
+          setTimeout(() => {
+            el.textContent = String(to)
+          }, duration * 1000 + 700)
         }
         stop = M.inView(el, run, { amount: 0.6 })
+        observeGeometrically(el, 0.6, run, () => fired)
       })
     },
 
-    /* Scroll-linked value, e.g. a progress rail. */
+    /* Scroll-linked value, e.g. a progress rail. Motion hands the callback the
+       progress number for the chosen axis, not an info object. */
     progress(fn, target) {
       if (!live || !M.scroll) return
-      M.scroll(({ y }) => fn(y.progress), target ? { target } : undefined)
+      M.scroll((p) => fn(p), target ? { target, axis: 'y' } : { axis: 'y' })
     },
   }
 
   window.GX = GX
+
+  /* Orphan sweep.
+     `data-reveal` in the markup only means "may be revealed"; it is the lane
+     script that claims an element by registering it. An element that is marked
+     but never claimed — because a selector changed, or because the lane animates
+     its children instead — would be hidden by the stylesheet with nothing left
+     to un-hide it. Anything unclaimed once the lane has finished registering is
+     therefore made visible immediately. */
+  setTimeout(() => {
+    if (!live) return
+    document.querySelectorAll('[data-reveal]').forEach((el) => {
+      if (!pending.has(el) && !el.classList.contains('is-in')) settle(el)
+    })
+  }, 0)
 
   /* Lanes load after this file but Motion is deferred too; if a lane script
      ran before Motion parsed, it would silently no-op. Signal readiness. */

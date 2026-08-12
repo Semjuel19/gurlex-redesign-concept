@@ -1,6 +1,7 @@
 /* Lane 02 — Ovocný sad: choreography.
-   Springs, because everything here is soft and ripe. Crates settle in like
-   fruit being set down, never sliding on a rail. */
+   Soft and unhurried: long exponential ease-outs, a little scale so things
+   settle rather than slide. No springs — a spring has no fixed duration, which
+   makes it impossible to guarantee when an element is safe to un-hide. */
 (() => {
   'use strict'
   const GX = window.GX
@@ -31,7 +32,7 @@
     '.hero__fruit',
     () => [
       { opacity: [0, 1], scale: [0.72, 1] },
-      { type: 'spring', stiffness: 90, damping: 16 },
+      { duration: 1.1, ease: GX.ease },
     ],
     { base: 0.08 }
   )
@@ -39,7 +40,7 @@
     '.hero__object picture',
     () => [
       { opacity: [0, 1], y: [40, 0] },
-      { type: 'spring', stiffness: 110, damping: 18 },
+      { duration: 1, ease: GX.ease },
     ],
     { base: 0.3 }
   )
@@ -48,7 +49,7 @@
     '.harvest__row li',
     () => [
       { opacity: [0, 1], y: [26, 0], scale: [0.94, 1] },
-      { type: 'spring', stiffness: 120, damping: 17 },
+      { duration: 0.85, ease: GX.ease },
     ],
     { stagger: 0.07, amount: 0.2 }
   )
@@ -61,13 +62,13 @@
 
   GX.onView('#brands-h, .brands__note', () => rise(16, 0.7), { amount: 0.35 })
 
-  /* Crates arrive with a little weight: a spring, plus a barely-there tilt so
+  /* Crates arrive with a little weight, plus a barely-there tilt so
      the grid never reads as a wall of identical cards snapping in unison. */
   GX.onView(
     '.crate',
     (el, i) => [
       { opacity: [0, 1], y: [30, 0], rotate: [i % 2 ? 0.8 : -0.8, 0] },
-      { type: 'spring', stiffness: 130, damping: 18 },
+      { duration: 0.8, ease: GX.ease },
     ],
     { stagger: 0.05, amount: 0.2 }
   )
@@ -81,11 +82,14 @@
      pixels, so it reads as depth rather than as a moving element. */
   const since = document.querySelector('.about__since')
   if (since && M.scroll) {
+    /* Progress arrives as a number: with a target, Motion always calls
+       onScroll(info[axis].progress, info), so a one-argument callback that
+       expects the info object throws on every scroll frame. */
     M.scroll(
-      (info) => {
-        since.style.transform = `translateY(${(0.5 - info.y.progress) * 34}px)`
+      (progress) => {
+        since.style.translate = `0 ${(0.5 - progress) * 34}px`
       },
-      { target: document.querySelector('.about'), offset: ['start end', 'end start'] }
+      { target: document.querySelector('.about'), axis: 'y', offset: ['start end', 'end start'] }
     )
   }
 })()

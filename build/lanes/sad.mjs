@@ -72,7 +72,7 @@ export default function sad() {
         </div>
       </div>
 
-      <figure class="hero__object" data-reveal>
+      <figure class="hero__object">
         <span class="hero__fruit" aria-hidden="true"></span>
         <picture>
           <source srcset="../assets/bottle-hero.avif" type="image/avif">
