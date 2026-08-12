@@ -1,110 +1,138 @@
-# Gurlex.sk — redesign concept
+# Gurlex.sk — redesign concepts
 
-A single-page redesign concept for the homepage of **[gurlex.sk](https://www.gurlex.sk/)**, a Slovak spirits distributor. Built as a demonstration piece for a redesign proposal.
+Four independent design directions for the [www.gurlex.sk](https://www.gurlex.sk/)
+homepage, plus the earlier concept kept for comparison. Built as a presentation
+piece for a work proposal.
 
-**→ Live demo: https://semjuel19.github.io/gurlex-redesign-concept/**
+**Live:** https://semjuel19.github.io/gurlex-redesign-concept/
 
----
-
-## ⚠️ Not an official site
-
-This is an **unofficial design concept**, produced independently as a work sample. It is not affiliated with, endorsed by, or commissioned by Gurlex s.r.o.
-
-- All brand names, logos and product photography belong to **Gurlex s.r.o.** and its suppliers (GAS FAMILIA s.r.o., BGV s.r.o., Nestville Distillery). They are reproduced here only to illustrate a proposed redesign of that company's own site.
-- Existing brand graphics are credited on the live site to **Roman Janovský**; that credit is preserved in the footer.
-- The live, official site is **[www.gurlex.sk](https://www.gurlex.sk/)**.
-
-If a rights holder wants this taken down, open an issue and it will be removed.
+> **Not an official site.** This is an unofficial redesign concept. All content,
+> brands and logos belong to Gurlex s.r.o. and its suppliers. Every page is
+> marked as a concept and carries `<meta name="robots" content="noindex">`.
 
 ---
 
-## What this demonstrates
+## The five versions
 
-Every piece of content from the current homepage is carried over: the age gate, full navigation, four country locales, the five company paragraphs, all 20 brands, both producers, all three downloads, and the complete contact block. Nothing was dropped to make the design easier.
+| | Direction | Theme | Colour strategy | Type |
+|---|---|---|---|---|
+| 01 | [Karpatský chlad](chlad/) — alpine cold | light | committed: snow + spruce, one rescue-orange signal | Familjen Grotesk |
+| 02 | [Ovocný sad](sad/) — the orchard | light | full palette: plum, juniper, pear, damson | Bricolage Grotesque + Hanken Grotesk |
+| 03 | [Nočná destilácia](noc/) — night still | dark | drenched: juniper-black + electric lime | Darker Grotesque + Chivo |
+| 04 | [Distribučný stroj](stroj/) — the machine | dark | committed: graphite + safety yellow | Anybody (width axis) + Chivo |
+| 05 | [Modrá v1](v1/) — first concept | dark | drenched: corporate blue | Archivo |
 
-The point is that the same content can be presented far better, and measurably lighter.
+All five carry **identical content**: the age gate, full navigation, the four
+locale links, the five company paragraphs, all 20 brands with their real product
+counts and own domains, both producers, the three downloads, and the complete
+contact block. Only the presentation differs.
 
-### Measured, same content
+The clearest difference between them is how each one handles the 20 brands, which
+is the real design problem on this page — twenty logos with twenty different
+identities, colours and aspect ratios:
 
-| | Current gurlex.sk | This concept |
-|---|---|---|
-| Page weight (first load) | **9,818 KB** | **237 KB** |
-| Requests | 49 | 6 |
-| Largest single image | 2,943 KB | 57 KB |
-| Modern image formats | none | AVIF + WebP |
-| Lazy loading | none | 28 of 31 images |
-| `<h1>` on the page | **none** | 1 |
-| Meta description | empty | written |
-| Open Graph tags | 0 | 7 |
-| JSON-LD structured data | none | `Organization` |
-| `hreflang` for 4 domains | none | 5 entries |
-| Canonical URL | none | yes |
-| Images missing `alt` | 23 | 0 |
-| Pinch-zoom | **blocked** | enabled |
-| Third-party CDNs | 5 | 0 |
-| jQuery / Bootstrap | 2018 versions | none |
+- **01** an index of routes: hairline rows, number, name, own site, count
+- **02** crates: light plates with a fruit-coloured band, four tiles breaking the grid
+- **03** labels on a dark shelf: the only light surfaces on the page
+- **04** an actual data table with a header, alternating rows and a total
 
-Page weight was measured from `performance.getEntriesByType('resource')` on both sites. Of the 237 KB here, ~176 KB is the self-hosted variable font, a deliberate trade to remove all third-party CDN and Google Fonts dependencies.
+Each lane also picks its own scene, and the scene decided the theme rather than
+taste. Lane 01 is a Tatras hotel buyer at 9am with snow-glare off the window;
+lane 03 is someone on a phone at night with the screen as the only light source.
 
-### Accessibility
+## Repository layout
 
-- All 25 sampled text/background pairs pass WCAG AA contrast, verified by computing relative luminance directly from the OKLCH values rather than eyeballing it. The warm accent needed a separate darkened token (`--accent-on-light`) for use on the light tiles, where the base accent only reached 2.9:1.
-- One `<h1>`, no skipped heading levels.
-- Age gate is a real `role="dialog"` with `aria-modal`, a focus trap, synchronous focus move, and a decline path (the current site offers only "I am over 18").
-- Nav and disclosure menus use `aria-expanded` / `aria-controls`, work by keyboard, and close on Escape and outside click.
-- Skip link, visible focus rings, 24px+ targets for standalone links. The two sub-24px links that remain are inline links inside sentences, which WCAG 2.2 SC 2.5.8 exempts.
-- Single correct viewport meta, so pinch-zoom works. The current site ships two, the second disabling zoom.
-- `prefers-reduced-motion` honoured.
-- Content never depends on JavaScript to become visible: reveal animations are opt-in (`html.anim`), added by JS only once it can also undo them, with a timeout and `visibilitychange` safety net. Without JS the page renders fully.
+```
+index.html          the chooser (generated)
+picker.css
+chlad/  sad/  noc/  stroj/     index.html (generated) + lane.css + lane.js
+v1/                 the earlier concept, unchanged apart from asset paths
+shared/base.css     reset, a11y utilities, age-gate mechanics
+shared/switcher.css the version switcher (separate so v1 can use it alone)
+shared/site.js      age gate, navigation, and the Motion wrapper
+lib/motion.min.js   Motion, tree-shaken to the APIs used (73 KB, 27 KB gzipped)
+assets/             fonts, brand marks, product shots, cut-outs
+build/              content.mjs, partials.mjs, lanes/*.mjs, build.mjs
+```
 
----
+## Building
 
-## Design notes
-
-**The problem.** Gurlex distributes 20 brands whose packaging designs actively clash: folk-illustrated blue Goral, black-and-gold Tatra Balsam, kosher Spišská, hot-pink Fruxi. A site that adds its own decoration fights all twenty at once. The current site buries them under Bootstrap chrome.
-
-**The idea.** Drench the page in Gurlex's own blue and make the **brand tiles the only light surfaces on the entire page**, so the products are literally the only things that light up. Colour comes from the bottles, never from the interface.
-
-- **Colour.** Committed/drenched strategy in OKLCH, built around the brand's existing `#0033ab`. Nothing is `#000` or `#fff`; every neutral is tinted toward the brand hue. The warm vermilion accent is taken from the red "Gr" in the existing Gurlex wordmark, giving the cold blue a counterpoint that is already part of the identity.
-- **Type.** One family, [Archivo](https://fonts.google.com/specimen/Archivo) variable, using its **width axis** as voice: expanded 118% for display, 88% semi-condensed for labels, 100% for body. Industrial-signage precision rather than the heritage-serif reflex that spirits brands default to. Self-hosted WOFF2, latin + latin-ext subsets.
-- **Slovak typography.** Headings never go below `line-height: 1.06`. Slovak stacks ´ ˇ ˆ ° above capitals, and tighter leading makes accents collide with the line above. This was a real bug caught in review at `line-height: 0.9`.
-- **Layout.** Asymmetric, not centred stacks. Section heads sit in a narrow sticky rail with a numbered catalogue index (01–05), because a distributor's site *is* a catalogue. Brand tiles use explicit grid rows so the number, logo, name, count and external-site line stay aligned across a row whether or not a brand has an external site.
-- **Imagery.** The hero bottle is a real transparent cut-out from the client's own assets. The bright shelf band uses six real product shots with `mix-blend-mode: multiply`, which dissolves their white studio backgrounds into the frost surface.
-- **Motion.** One orchestrated entrance with staggered reveals, exponential ease-out, transform and opacity only, fully disabled under reduced-motion.
-
-Product counts on each tile (2, 12, 49...) are real, scraped from the live site: 196 products across 20 brands.
-
----
-
-## Stack
-
-Deliberately dependency-free: hand-written HTML, CSS and ~150 lines of vanilla JS. No framework, no build step, no npm install. It deploys as static files and demonstrates the performance argument without any tooling to explain.
-
-For production the recommendation is different: **Next.js + Payload CMS + Postgres**, so the content is editable, the four locales share one codebase, and the product model is structured for e-commerce later. This repo is the visual and technical proof, not the proposed architecture.
-
-## Run locally
+The published site has **no build step** — it is static HTML, CSS and one JS
+file. The build script exists only so the shared content is written once instead
+of four times:
 
 ```bash
-git clone git@github.com:Semjuel19/gurlex-redesign-concept.git
-cd gurlex-redesign-concept
-python3 -m http.server 4173
-# open http://localhost:4173
+node build/build.mjs
 ```
 
-Any static server works. There is nothing to build.
+It writes `index.html` and each `<lane>/index.html`, then fails loudly if any
+page references a local file that is not on disk. `build/content.mjs` is the
+single source of every word and number; `build/lanes/*.mjs` decide the markup.
 
-The age gate persists its answer in `localStorage`. Use the **"Zobraziť vekovú bránu znova"** button in the footer to reset it when demoing. In production this check belongs server-side, so that deep links cannot bypass it, which is how the current site does it and one of the few things it gets right.
+Editing a lane's `lane.css` or `lane.js` needs no rebuild. Editing copy or
+structure does.
 
-## Files
+## Notes on the implementation
 
-```
-index.html   markup, metadata, structured data
-styles.css   design tokens + all styling
-app.js       age gate, nav disclosures, reveal observer
-assets/
-  fonts/     Archivo variable, latin + latin-ext WOFF2
-  brands/    20 brand logos (WebP)
-  bottles/   6 product shots for the shelf band (WebP)
-  brand/     wordmark + two producer logos (WebP)
-  bottle-hero.{avif,webp}
-```
+**Motion.** Animation uses [Motion](https://motion.dev) (motion.dev), the engine
+behind Framer Motion, via its vanilla API — so there is no React and no build
+step, but real spring physics, stagger and scroll-linked motion. It is bundled
+down to only the imported functions and self-hosted.
+
+Everything is progressive enhancement. The pages are complete and readable with
+scripting off, and `shared/site.js` holds three guarantees that matter more than
+they look:
+
+- Choreography is **held until the document is actually visible**. A page opened
+  in a background tab never advances a frame, so an animation started there sits
+  on its first keyframe indefinitely — and with `opacity: 0` as that keyframe,
+  that is an invisible page.
+- If nothing has started a few seconds in, the hidden state is dropped entirely:
+  a dead or unsupported observer must never cost the visitor the content.
+- Recovering an element **completes its animation** rather than just clearing the
+  inline styles, because an abandoned animation still owns the property and
+  writes its start value back on the next tick.
+
+**Product shots.** The supplied shots are opaque, on white. That only composites
+cleanly with `mix-blend-mode: multiply`, which silently stops working inside any
+ancestor that has a transform, an opacity or a filter — i.e. every card that
+lifts on hover and every element that animates in. So the background is keyed out
+at build time instead (flood fill from the frame edge, since these are clear
+glass and the labels are white), and `assets/cut/` holds the results. They then
+work unchanged on light and dark surfaces.
+
+**Type.** Self-hosted, split `latin` / `latin-ext` so Slovak diacritics never
+fall back mid-word, and subsetted to the character sets of all four locales
+(sk, cs, pl, hu) rather than to this demo's copy. Unused variable axes are
+pinned: 631 KB → 294 KB across seven faces.
+
+Slovak stacks ´ ˇ ˆ ° above capitals, so no heading anywhere goes tighter than
+`line-height: 1.05`. Below that the accents collide with the line above — a bug
+you only see in this language.
+
+**Accessibility.** Verified on every lane at 1440px and 390px: one `<h1>` per
+page, no heading-level jumps, no text under WCAG AA contrast (measured by
+resolving the computed `oklch()` colours through a canvas, since parsing them as
+RGB gives nonsense ratios), tap targets at least 24×24 except inline sentence
+links, no horizontal overflow, and nothing left invisible by the reveal system.
+`prefers-reduced-motion: reduce` disables all choreography and settles every
+element in its final state.
+
+**Weight.** Code and fonts delivered per lane, against the current site's
+9,818 KB / 49 requests:
+
+| lane | code + fonts | of which fonts |
+|---|---|---|
+| chlad | 63 KB | 17 KB |
+| noc | 96 KB | 50 KB |
+| stroj | 127 KB | 82 KB |
+| sad | 142 KB | 97 KB |
+
+Plus one 31 KB AVIF hero. Every other image is lazy-loaded.
+
+## What this is not
+
+A production build. The age gate is client-side only (in production it belongs
+server-side so deep links cannot bypass it), there is no CMS, the four locales
+are linked but not translated, and no e-commerce is implemented — though each
+direction leaves room for price, availability and a cart, which is the next phase.

@@ -1,0 +1,137 @@
+/* ===========================================================================
+   Gurlex concept — shared foundation
+   Mechanics only: reset, accessibility utilities, age-gate behaviour, the
+   variant switcher. Every colour, typeface and surface belongs to a lane.
+   =========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* `clip` rather than `hidden`: `hidden` on the root silently breaks
+     position: sticky further down the page. */
+  overflow-x: clip;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body.locked { overflow: hidden; }
+
+h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+img, picture, svg { display: block; max-width: 100%; }
+img { height: auto; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+
+address { font-style: normal; }
+
+/* Tabular figures wherever numbers are compared vertically. */
+.num { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
+
+/* --- accessibility utilities ---------------------------------------------- */
+
+.sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  top: 0; left: 50%;
+  z-index: 300;
+  transform: translate(-50%, -110%);
+  padding: 0.7rem 1.1rem;
+  background: #101010;
+  color: #fff;
+  font: 500 0.9rem/1 system-ui, sans-serif;
+  text-decoration: none;
+  border-radius: 0 0 4px 4px;
+}
+.skip:focus-visible { transform: translate(-50%, 0); }
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus, currentColor);
+  outline-offset: 3px;
+}
+
+/* --- buttons -------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  /* Declared explicitly: without it a <button> falls back to the UA
+     `buttonface` colour and ghost variants lose their text. */
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  /* 44px minimum touch target (WCAG 2.2 SC 2.5.8). */
+  min-height: 2.75rem;
+}
+
+/* --- age gate ------------------------------------------------------------- */
+/* Mechanics live here so a lane can never accidentally un-modal the dialog:
+   a stray `body > *` rule once out-specified `position: fixed` and turned the
+   overlay into an in-flow block with the site visible beneath it. */
+
+.gate[hidden] { display: none; }
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--gate-scrim, rgb(8 10 14 / 0.94));
+}
+.gate__panel {
+  width: min(64rem, 100%);
+  max-height: 100%;
+}
+.gate__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+.gate__deny[hidden] { display: none; }
+
+/* --- reveal safety net ---------------------------------------------------- */
+/* Content is visible by default. The hidden starting state is opt-in via
+   html.anim, which scripting only adds once it can guarantee it will undo it.
+   A broken observer or a suspended background tab must never leave the page
+   blank. */
+
+.anim [data-reveal]:not(.is-in) {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .anim [data-reveal] { opacity: 1 !important; transform: none !important; }
+}
+
+/* --- variant switcher ----------------------------------------------------- */
+/* Lives in shared/switcher.css so the v1 page can load it on its own. */
+
+@media print {
+  .sw, .gate, .skip { display: none !important; }
+}

@@ -1,0 +1,72 @@
+/* ===========================================================================
+   Variant switcher — the reviewing tool, not the design.
+   Kept in its own file so the earlier v1 concept can carry the switcher
+   without also loading base.css, whose reset it was never written against.
+   =========================================================================== */
+
+/* Deliberately neutral chrome, identical on every lane. Each lane reserves
+   room for it in its own footer padding rather than on <body>, so a dark
+   footer still runs to the bottom edge of the page. */
+
+.sw {
+  position: fixed;
+  z-index: 150;
+  left: 50%;
+  bottom: 0.85rem;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: stretch;
+  max-width: calc(100vw - 1.5rem);
+  padding: 0.3rem;
+  gap: 0.3rem;
+  background: oklch(17% 0.008 260);
+  border: 1px solid oklch(32% 0.01 260);
+  border-radius: 999px;
+  box-shadow: 0 8px 30px -8px rgb(0 0 0 / 0.55);
+  font: 500 0.78rem/1 ui-sans-serif, system-ui, sans-serif;
+  color: oklch(78% 0.01 260);
+  --focus: oklch(85% 0.16 95);
+}
+.sw__list {
+  display: flex;
+  gap: 0.15rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.sw__list::-webkit-scrollbar { display: none; }
+.sw a {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.55rem 0.7rem;
+  min-height: 2.1rem;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.16s, color 0.16s;
+}
+.sw a:hover { background: oklch(26% 0.01 260); color: oklch(96% 0.005 260); }
+.sw a.is-on {
+  background: oklch(94% 0.01 260);
+  color: oklch(17% 0.008 260);
+}
+.sw__n {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.55;
+  font-size: 0.9em;
+}
+.sw a.is-on .sw__n { opacity: 0.6; }
+.sw__idx {
+  border-right: 1px solid oklch(32% 0.01 260);
+  border-radius: 999px 0 0 999px;
+  padding-right: 0.85rem !important;
+}
+
+@media (max-width: 40rem) {
+  .sw { font-size: 0.72rem; bottom: 0.5rem; }
+  .sw__idx { display: none; }
+}
+
+@media print {
+  .sw { display: none !important; }
+}
