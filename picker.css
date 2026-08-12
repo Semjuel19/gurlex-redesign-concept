@@ -96,32 +96,23 @@ svg { display: block; }
 }
 .top h1 .dot { color: var(--mark); }
 .intro {
-  margin-top: 1.6rem;
-  max-width: 62ch;
-  font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.22rem);
-  color: var(--mute);
+  margin-top: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text);
 }
-.intro strong { color: var(--text); font-weight: 600; }
-.intro a { color: var(--text); text-underline-offset: 0.2em; }
-
-.brief {
-  margin-top: clamp(2rem, 5vw, 3rem);
-  display: grid;
-  gap: 1px;
-  background: var(--rule);
-  border: 1px solid var(--rule);
+/* a rule growing out of the line, so one short sentence still reads as a
+   deliberate standfirst rather than a leftover fragment */
+.intro::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--rule), transparent);
 }
-@media (min-width: 34rem) { .brief { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 60rem) { .brief { grid-template-columns: repeat(4, 1fr); } }
-.brief > div { padding: 0.9rem 1.1rem; background: var(--page); }
-.brief dt {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-.brief dd { margin-top: 0.25rem; font-size: 0.94rem; color: var(--text); }
 
 /* --- cards ---------------------------------------------------------------- */
 
@@ -252,51 +243,6 @@ svg { display: block; }
 }
 .card__go svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
 .card > a:hover .card__go svg { transform: translateX(0.3rem); }
-
-/* --- what to look for ----------------------------------------------------- */
-
-.note {
-  margin: clamp(2.5rem, 6vw, 4rem) 0 0;
-  padding: clamp(1.4rem, 3.5vw, 2.2rem);
-  background: var(--panel);
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-}
-.note h2 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-}
-.note ol {
-  margin-top: 1rem;
-  display: grid;
-  gap: 0.7rem;
-  counter-reset: n;
-}
-@media (min-width: 56rem) { .note ol { grid-template-columns: 1fr 1fr; column-gap: 2rem; } }
-.note li {
-  position: relative;
-  padding-left: 1.9rem;
-  font-size: 0.95rem;
-  color: var(--mute);
-  counter-increment: n;
-}
-.note li::before {
-  content: counter(n);
-  position: absolute;
-  left: 0;
-  top: 0.15em;
-  display: grid;
-  place-items: center;
-  width: 1.35rem;
-  height: 1.35rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--page);
-  background: var(--mark);
-  border-radius: 50%;
-}
-.note b { color: var(--text); font-weight: 600; }
 
 /* --- footer --------------------------------------------------------------- */
 

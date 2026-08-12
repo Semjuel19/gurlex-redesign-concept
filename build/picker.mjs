@@ -138,19 +138,7 @@ ${JSON.stringify(jsonLd, null, 2)}
   <div class="wrap">
     <p class="eyebrow">Neoficiálny návrh redizajnu</p>
     <h1>Gurlex.sk<span class="dot">.</span><br>Štyri smery</h1>
-    <p class="intro">
-      Domovská stránka <a href="${site.canonical}">www.gurlex.sk</a> v štyroch návrhoch.
-      Každý z nich nesie <strong>rovnaký obsah</strong> ako súčasná stránka — všetkých
-      20 značiek, 196 produktov, obidvoch výrobcov, dokumenty aj kompletný kontakt —
-      a líši sa len tým, ako ho podáva. Piaty je predchádzajúci koncept, ponechaný na
-      porovnanie.
-    </p>
-    <dl class="brief">
-      <div><dt>Obsah</dt><dd>Prevzatý 1 : 1 zo súčasnej stránky</dd></div>
-      <div><dt>Technika</dt><dd>Statické HTML a CSS, bez build kroku</dd></div>
-      <div><dt>Animácie</dt><dd>Motion (rovnaký engine ako Framer Motion)</dd></div>
-      <div><dt>Jazyk</dt><dd>SK, pripravené pre CZ / PL / HU</dd></div>
-    </dl>
+    <p class="intro">Zvoľ si variant</p>
   </div>
 </header>
 
@@ -191,15 +179,6 @@ ${CARDS.map(
 ).join('\n')}
     </ul>
 
-    <section class="note" aria-labelledby="note-h">
-      <h2 id="note-h">Na čo sa pri výbere pozerať</h2>
-      <ol>
-        <li><b>Kto je hlavný návštevník.</b> Odberateľ, ktorý hľadá číslo, potrebuje niečo iné než spotrebiteľ, ktorý si prezerá sortiment.</li>
-        <li><b>Ako obstojí 20 cudzích logotypov.</b> Značky majú vlastné identity a farby; každý návrh ich zvláda inak.</li>
-        <li><b>Či zostane funkčný pri 40 značkách.</b> Register a tabuľka rastú lepšie než mriežka kariet.</li>
-        <li><b>Ako sa doň zmestí e-shop.</b> Cena, dostupnosť a košík sú ďalšia fáza; každý z návrhov na to má miesto.</li>
-      </ol>
-    </section>
   </div>
 </main>
 
