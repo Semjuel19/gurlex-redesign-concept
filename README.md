@@ -1,8 +1,7 @@
 # Gurlex.sk — redesign concepts
 
-Four independent design directions for the [www.gurlex.sk](https://www.gurlex.sk/)
-homepage, plus the earlier concept kept for comparison. Built as a presentation
-piece for a work proposal.
+Five design directions for the [www.gurlex.sk](https://www.gurlex.sk/) homepage,
+built as a presentation piece for a work proposal.
 
 **Live:** https://semjuel19.github.io/gurlex-redesign-concept/
 
@@ -20,7 +19,7 @@ piece for a work proposal.
 | 02 | [Ovocný sad](sad/) — the orchard | light | full palette: plum, juniper, pear, damson | Bricolage Grotesque + Hanken Grotesk |
 | 03 | [Nočná destilácia](noc/) — night still | dark | drenched: juniper-black + electric lime | Darker Grotesque + Chivo |
 | 04 | [Distribučný stroj](stroj/) — the machine | dark | committed: graphite + safety yellow | Anybody (width axis) + Chivo |
-| 05 | [Modrá v1](v1/) — first concept | dark | drenched: corporate blue | Archivo |
+| 05 | [Firemná modrá](v1/) — closest to the current site | dark | drenched: corporate blue | Archivo |
 
 All five carry **identical content**: the age gate, full navigation, the four
 locale links, the five company paragraphs, all 20 brands with their real product
@@ -35,10 +34,14 @@ identities, colours and aspect ratios:
 - **02** crates: light plates with a fruit-coloured band, four tiles breaking the grid
 - **03** labels on a dark shelf: the only light surfaces on the page
 - **04** an actual data table with a header, alternating rows and a total
+- **05** a uniform grid of light tiles, the closest to what the site does today
 
-Each lane also picks its own scene, and the scene decided the theme rather than
-taste. Lane 01 is a Tatras hotel buyer at 9am with snow-glare off the window;
-lane 03 is someone on a phone at night with the screen as the only light source.
+Each of the four new lanes picks its own scene, and the scene decided the theme
+rather than taste. Lane 01 is a Tatras hotel buyer at 9am with snow-glare off
+the window; lane 03 is someone on a phone at night with the screen as the only
+light source. Lane 05 predates that method: it was built directly on the
+existing site's corporate blue, which is what makes it the low-risk option
+rather than a discarded draft.
 
 ## Repository layout
 
@@ -46,7 +49,7 @@ lane 03 is someone on a phone at night with the screen as the only light source.
 index.html          the chooser (generated)
 picker.css
 chlad/  sad/  noc/  stroj/     index.html (generated) + lane.css + lane.js
-v1/                 the earlier concept, unchanged apart from asset paths
+v1/                 the blue variant (hand-written, not generated)
 shared/base.css     reset, a11y utilities, age-gate mechanics
 shared/switcher.css the version switcher (separate so v1 can use it alone)
 shared/site.js      age gate, navigation, and the Motion wrapper

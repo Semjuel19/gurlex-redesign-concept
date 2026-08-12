@@ -1,5 +1,5 @@
 /* Single source of truth for every word and asset on the page.
-   Transcribed from www.gurlex.sk so all four lanes carry identical content
+   Transcribed from www.gurlex.sk so every variant carries identical content
    and only the design differs. Nothing here is lane-specific. */
 
 export const site = {
@@ -184,13 +184,14 @@ export const disclaimer = {
   regate: 'Zobraziť vekovú bránu znova',
 }
 
-/* The four design lanes plus the earlier concept, in switcher order. */
+/* The five design directions, in switcher order. The blue one was built on
+   the existing site and counts as a variant like any other. */
 export const lanes = [
   { id: 'chlad', n: '01', name: 'Karpatský chlad', gloss: 'alpine cold' },
   { id: 'sad', n: '02', name: 'Ovocný sad', gloss: 'the orchard' },
   { id: 'noc', n: '03', name: 'Nočná destilácia', gloss: 'night still' },
   { id: 'stroj', n: '04', name: 'Distribučný stroj', gloss: 'the machine' },
-  { id: 'v1', n: '05', name: 'Modrá v1', gloss: 'first concept' },
+  { id: 'v1', n: '05', name: 'Firemná modrá', gloss: 'closest to the current site' },
 ]
 
 export const jsonLd = {

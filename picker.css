@@ -195,7 +195,6 @@ svg { display: block; }
   letter-spacing: -0.025em;
   line-height: 1.15;
 }
-.card__gloss { font-size: 0.86rem; color: var(--mute); font-style: italic; }
 .card__lead { font-size: 0.97rem; color: var(--mute); max-width: 54ch; }
 .card__diff {
   font-size: 0.92rem;

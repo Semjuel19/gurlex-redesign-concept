@@ -157,7 +157,7 @@ export function gateMarkup({ bottle = true } = {}) {
 /* Presentation affordance, not part of the design under review: lets the
    reviewer hop between lanes without going back to the index. */
 export function switcherMarkup(active) {
-  const short = { chlad: 'Chlad', sad: 'Sad', noc: 'Noc', stroj: 'Stroj', v1: 'Modrá v1' }
+  const short = { chlad: 'Chlad', sad: 'Sad', noc: 'Noc', stroj: 'Stroj', v1: 'Modrá' }
   return `<nav class="sw" aria-label="Verzie návrhu">
   <a class="sw__idx" href="../">Všetky verzie</a>
   <ul class="sw__list">

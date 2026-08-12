@@ -1,6 +1,8 @@
-/* The chooser at the root. Deliberately plain: it frames the four directions
-   without competing with them, and states what each one commits to so the
-   choice is made on the design rather than on novelty. */
+/* The chooser at the root. Deliberately plain: it frames the five directions
+   without competing with any of them, and states what each one commits to so
+   the choice is made on the design rather than on novelty.
+   The blue one is a variant like the rest: it was built on the existing site,
+   so it is the smallest step rather than an archived draft. */
 
 import { site, jsonLd } from './content.mjs'
 
@@ -11,7 +13,6 @@ const CARDS = [
     id: 'chlad',
     n: '01',
     name: 'Karpatský chlad',
-    gloss: 'alpine cold',
     bg: 'oklch(97.6% 0.005 220)',
     ink: 'oklch(26% 0.048 168)',
     mute: 'oklch(48% 0.018 215)',
@@ -29,7 +30,6 @@ const CARDS = [
     id: 'sad',
     n: '02',
     name: 'Ovocný sad',
-    gloss: 'the orchard',
     bg: 'oklch(96.2% 0.021 88)',
     ink: 'oklch(24% 0.042 42)',
     mute: 'oklch(52% 0.03 50)',
@@ -47,7 +47,6 @@ const CARDS = [
     id: 'noc',
     n: '03',
     name: 'Nočná destilácia',
-    gloss: 'night still',
     bg: 'oklch(15.5% 0.032 165)',
     ink: 'oklch(95.5% 0.012 150)',
     mute: 'oklch(74% 0.022 158)',
@@ -65,7 +64,6 @@ const CARDS = [
     id: 'stroj',
     n: '04',
     name: 'Distribučný stroj',
-    gloss: 'the machine',
     bg: 'oklch(20.5% 0.006 255)',
     ink: 'oklch(93.5% 0.004 255)',
     mute: 'oklch(71% 0.006 255)',
@@ -82,8 +80,7 @@ const CARDS = [
   {
     id: 'v1',
     n: '05',
-    name: 'Modrá v1',
-    gloss: 'prvý koncept',
+    name: 'Firemná modrá',
     bg: 'oklch(19.5% 0.068 264)',
     ink: 'oklch(96% 0.007 250)',
     mute: 'oklch(72% 0.02 250)',
@@ -94,8 +91,8 @@ const CARDS = [
     strategy: 'Drenched — firemná modrá',
     type: 'Archivo',
     lead:
-      'Predchádzajúci koncept, ponechaný na porovnanie. Firemná modrá z loga, vermilion akcent z červeného „Gr“ a značky ako jednotná mriežka svetlých kachličiek.',
-    diff: 'Referencia. Zostáva dostupný, aby sa nové smery dali porovnať s tým, čo už poznáte.',
+      'Postavené na tom, čo už na stránke je: firemná modrá z loga, vermilion akcent z červeného „Gr“ a značky ako jednotná mriežka svetlých kachličiek. Modernizácia súčasnej stránky, nie odklon od nej.',
+    diff: 'Najmenší skok pre návštevníka aj pre značku. Vhodné, ak má redizajn zostať na prvý pohľad rozpoznateľný.',
   },
 ]
 
@@ -111,14 +108,14 @@ export default function picker() {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Gurlex.sk — štyri návrhy redizajnu</title>
-<meta name="description" content="Štyri smery redizajnu domovskej stránky Gurlex s.r.o. plus prvý koncept. Neoficiálna ukážka k pracovnej ponuke.">
+<title>Gurlex.sk — päť návrhov redizajnu</title>
+<meta name="description" content="Päť smerov redizajnu domovskej stránky Gurlex s.r.o. Neoficiálna ukážka k pracovnej ponuke.">
 <meta name="robots" content="noindex">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="sk_SK">
-<meta property="og:title" content="Gurlex.sk — štyri návrhy redizajnu">
-<meta property="og:description" content="Štyri smery redizajnu domovskej stránky Gurlex s.r.o. Vyberte si.">
+<meta property="og:title" content="Gurlex.sk — päť návrhov redizajnu">
+<meta property="og:description" content="Päť smerov redizajnu domovskej stránky Gurlex s.r.o. Vyberte si.">
 <meta property="og:image" content="assets/og-image.png">
 
 <meta name="theme-color" content="#17181a">
@@ -137,7 +134,7 @@ ${JSON.stringify(jsonLd, null, 2)}
 <header class="top">
   <div class="wrap">
     <p class="eyebrow">Neoficiálny návrh redizajnu</p>
-    <h1>Gurlex.sk<span class="dot">.</span><br>Štyri smery</h1>
+    <h1>Gurlex.sk<span class="dot">.</span><br>Päť smerov</h1>
     <p class="intro">Zvoľ si variant</p>
   </div>
 </header>
@@ -160,7 +157,6 @@ ${CARDS.map(
             <span class="card__head">
               <span class="card__n">${c.n}</span>
               <span class="card__name">${c.name}</span>
-              <span class="card__gloss">${c.gloss}</span>
             </span>
             <span class="card__lead">${c.lead}</span>
             <span class="card__diff">${c.diff}</span>
